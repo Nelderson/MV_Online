@@ -1,2 +1,8 @@
-# MV_Online
-RPGMaker Online Core
+NASTY Server Documentation
+==========================
+
+Requirements
+-------------
+Node.js
+
+Documentation to come soon!
