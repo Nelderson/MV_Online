@@ -1,0 +1,35 @@
+/*
+* @Author: Vinxce
+* @Date:   2015-10-27 10:55:44
+* @Last Modified by:   Vinxce
+* @Last Modified time: 2015-10-27 21:31:32
+*/
+
+@keyframes fadeIn {
+	from 	{ opacity: 0; }
+	to 		{ opacity: 1; }
+}
+
+#LoginForm {
+	margin: auto;
+	text-shadow: none !important;
+	position: relative;
+	bottom: 50px;
+	animation: fadeIn 1 ease-in;
+}
+
+#RegisterForm{
+	margin: auto;
+	text-shadow: none !important;
+	position: relative;
+	bottom: 50px;
+	animation: fadeIn 1 ease-in;
+}
+
+#ActivationForm{
+	margin: auto;
+	text-shadow: none !important;
+	position: relative;
+	bottom: 50px;
+	animation: fadeIn 1 ease-in;
+}
