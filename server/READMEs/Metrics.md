@@ -4,8 +4,8 @@ MV Online Metrics Documentation
 Introduction
 -------------
 
-`Metrics` is useful data that you can use later on to project and show
-trends within your game
+`Metrics` allows you to store game data that you can use to project
+and show trends within your game
 
 Configuration
 -------------
