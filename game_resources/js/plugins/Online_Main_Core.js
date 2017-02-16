@@ -1,12 +1,13 @@
+var Imported = Imported || {};
+Imported.Online_Main_Core = true;
+var Nasty = Nasty || {};
+
 (function () {
 //=============================================================================
 // Online Main Core
-// Version: 1.0.0
+// Version: 1.0.1
 //=============================================================================
-var Imported = Imported || {};
-Imported.Online_Main_Core = true;
 
-var Nasty = Nasty || {};
 //=============================================================================
  /*:
  * @plugindesc Connect to a server with Socket.io!

@@ -1,15 +1,16 @@
+var Imported = Imported || {};
+Imported.Online_Login_Core = true;
+var Nasty = Nasty || {};
+
 (function () {
 //=============================================================================
 // Online Login Core
-// Version: 1.0.0
+// Version: 1.0.1
 //=============================================================================
-var Imported = Imported || {};
-Imported.Online_Login_Core = true;
 
-var Nasty = Nasty || {};
 //=============================================================================
  /*:
- * @plugindesc Login window for Nelderson's Online Core
+ * @plugindesc Login window for Neldersons Online Core
  *<Online_Login_Core>
  * @author Nelderson and SirMcPotato/Vinxce
  *
