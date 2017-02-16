@@ -1,12 +1,13 @@
+var Imported = Imported || {};
+Imported.Online_Metrics = true;
+var Nasty = Nasty || {};
+
 (function () {
 //=============================================================================
 // Online Metrics
-// Version: 1.0.0
+// Version: 1.0.1
 //=============================================================================
-var Imported = Imported || {};
-Imported.Nel_Metrics = true;
 
-var Nasty = Nasty || {};
 //=============================================================================
  /*:
  * @plugindesc Very simple netwokred metrics for your game.
@@ -25,20 +26,36 @@ var Nasty = Nasty || {};
  * Introduction and Instructions
  * ============================================================================
  *
- * $gameSystem._saveCount
- * $gameSystem.playtime();
- * $gameSystem._battleCount
- * $gameSystem._winCount
- * $gameSystem._escapeCount
- * $gameVariables.value(varID)
- * $gameParty._actors
- * $gameParty._gold
- * $gameParty._steps
- * $gameParty.items()
- * $gameParty.weapons()
- * $gameParty.armors()
- * $gameParty.allItems()
- * DataManager.latestSavefileId()
+ *  Metrics allow you to store game data that you can use to project
+ *  and show trends within your game.
+ *
+ *  REQUIRES: Online_Main_Core
+ *
+ * There are two ways to send metrics to your database:
+ *
+ *
+ * 1. Plugin Command: SendMetrics <location>
+ *
+ *  This plugin command will send the default metrics derfined under
+ *  the default_metrics function in the plugin js file.  Feel free to
+ *  change the default values to match your game.
+ *
+ *  <location> is the location where this is taking place for future reference.
+ *
+ *  Ex. SendMetrics AfterBossBattle
+ *
+ * 2. Script Call: $gameSystem.sendMetrics(data);
+ *
+ *  This script call passes a data object that is then uploaded to the database.
+ *  The data object can hold any arbitrary data you want.
+ *
+ *  Ex. $gameSystem.sendMetrics({
+ *        goblin_kill_count = $gameVariables.value(35);
+ *        save_count: $gameSystem._saveCount,
+ *        escape_count: $gameSystem._escapeCount,
+ *        battle_count: $gameSystem._battleCount,
+ *        location: "AfterGoblinBattle"
+ *   });
  *
  */
  //=============================================================================
@@ -77,7 +94,12 @@ var Nel_Metrics_GS_init_Alias = Game_System.prototype.initialize;
  };
 
 Game_System.prototype.sendMetrics = function(data){
-  $.post($gameNetwork._serverURL+'/metrics/datadump', data);
+  data.id = $gameSystem._metricsID;
+  $.post($gameNetwork._serverURL+'/metrics/datadump', data).done(function(data){
+    if (anonymousBool==='true'){
+      $gameSystem._metricsID = data;
+    }
+  });
 };
 
 Game_System.prototype.sendMetricsFromPlugin = function(data){
