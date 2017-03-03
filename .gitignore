@@ -2,6 +2,8 @@
 .DS_Store
 .DS_Store?
 
+#public folder
+public
 
 # Copied from node.gitignore on github
 
