@@ -1,9 +1,9 @@
 //=============================================================================
 // Nel's Online Core Server
-// Version: 0.0.3 - January 12th, 2017
+// Version: 0.0.4 - March 2nd, 2017
 //=============================================================================
-
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var config = require('./configurations/config');
@@ -29,6 +29,9 @@ app.use('/',require('./api_routes/login_routes'));
 
 // Authentication required:
 app.use('/example',require('./api_routes/example.js'));
+
+//Static Server - Used to serve static files (HTNL,PNG,etc.)
+app.use('/static', express.static('public'));
 
 //----------------------------------
 // ADD SOCKET IO MODULES HERE:
