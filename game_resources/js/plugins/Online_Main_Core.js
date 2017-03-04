@@ -1,8 +1,8 @@
 var Imported = Imported || {};
 Imported.Online_Main_Core = true;
-var Nasty = Nasty || {};
 
 (function () {
+var Nasty = Nasty || {};
 //=============================================================================
 // Online Main Core
 // Version: 1.0.1
