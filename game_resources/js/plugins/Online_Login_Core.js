@@ -5,7 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
-// Version: 1.0.1
+// Version: 1.0.3
 //=============================================================================
 
 //=============================================================================
@@ -259,7 +259,7 @@ var Nasty = Nasty || {};
 		this.displayInfo('Connecting <i class="fa fa-spin fa-spinner"></i>');
 
 		//POST FOR REGISTER
-		$.post('http://localhost:8000/register', {
+		$.post($gameNetwork._serverURL + '/register', {
 			username: username,
 			password: password,
 			email: email
