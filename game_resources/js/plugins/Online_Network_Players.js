@@ -102,7 +102,6 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 
 	 socket.on('changeRoomVar', function(data){
 		 currentRoom = data;
-		 console.log(currentRoom);
 		 networkMapEvents = {}; //NEL TEST
 	 });
 
