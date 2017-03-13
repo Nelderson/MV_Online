@@ -5,7 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
-// Version: 1.0.3
+// Version: 1.1.0
 //=============================================================================
 
 //=============================================================================
@@ -220,9 +220,10 @@ var Nasty = Nasty || {};
 						$gameNetwork._token = data.token;
 						var ioFlag = String(Nasty.Parameters['socket.io connection']);
 						$("#ErrorPrinter").fadeOut({duration: 1000}).html("");
-						if (ioFlag==='true'){
-							$gameNetwork.connectSocket();
+            if (ioFlag==='true'){
+							$gameNetwork.connectSocket('main','/');
 						}
+            $gameNetwork.connectSocketsAfterLogin();
             that.fadeOutAll();
 					  SceneManager.goto(Scene_Map);
 						return that.displayInfo("Ok : "+data.msg);
