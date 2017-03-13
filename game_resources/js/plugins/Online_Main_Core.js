@@ -1,11 +1,8 @@
 var Imported = Imported || {};
 Imported.Online_Main_Core = true;
-
-(function () {
-var Nasty = Nasty || {};
 //=============================================================================
 // Online Main Core
-// Version: 1.0.1
+// Version: 1.1.0
 //=============================================================================
 
 //=============================================================================
@@ -37,7 +34,7 @@ var Nasty = Nasty || {};
     $gameNetwork = new Game_Network();
  };
 
- Nasty.Parameters = $plugins.filter(function(p)
+ var Nel_MainCore_Online_PluginOpt = $plugins.filter(function(p)
     { return p.description.contains('<Online_Main_Core>');})[0].parameters;
 
 function Game_Network() {
@@ -45,23 +42,34 @@ function Game_Network() {
 }
 
 Game_Network.prototype.initialize = function() {
-    this._serverURL = String(Nasty.Parameters['Server URL']);
-    this._firstHash = String(Nasty.Parameters['First Hash']);
-    this._connectedToSocket = false;
+    this._serverURL = String(Nel_MainCore_Online_PluginOpt['Server URL']);
+    this._firstHash = String(Nel_MainCore_Online_PluginOpt['First Hash']);
     this._socket = {};
     this._token =0;
 };
 
-Game_Network.prototype.bindSocketEvents = function(socket) {
-  //Alias your own socket events (Similar to how you would add plugin commands)
+Game_Network.prototype.decodedJWT = function(){
+  if ($gameNetwork._token===0) return false;
+  var b64 =  $gameNetwork._token;
+  var body = b64.match(/[.](\S+)[.]/);
+  var buf = new Buffer(body[0], 'base64').toString("ascii");
+  var obj = JSON.parse(buf);
+  return obj;
+};
+
+Game_Network.prototype.connectSocketsAfterLogin = function(socket) {
+  //This runs right after logging in.
+  //Alias your own socket events
+  //(Similar to how you would add plugin commands)
 };
 
 
-Game_Network.prototype.connectSocket = function() {
-  this._socket = io.connect((String(Nasty.Parameters['Server URL'])), {
+Game_Network.prototype.connectSocket = function(socket_name, namespace) {
+  var url = this._serverURL;
+  this._socket[socket_name] = io.connect(url+namespace, {
     query: 'token=' + $gameNetwork._token
   });
-  var socket = this._socket;
+  var socket = this._socket[socket_name];
   socket.on('connect', function () {
     //Pass token on all POST/GET requests in the header
     $.ajaxSetup({
@@ -69,13 +77,9 @@ Game_Network.prototype.connectSocket = function() {
         'x-access-token': $gameNetwork._token
       }
     });
-    $gameNetwork._connectedToSocket = true;
-    $gameNetwork.bindSocketEvents(socket);
     console.log('Socket Authenticated');
   });
   socket.on('disconnect', function () {
     console.log('Socket Disconnected');
   });
 };
-
-})();
