@@ -1,6 +1,6 @@
 //=============================================================================
-// Nel's Online Core Server
-// Version: 0.0.4 - March 2nd, 2017
+// Nelderson's Online Core Server
+// Version: 0.1.0 - March 10th, 2017
 //=============================================================================
 var express = require('express');
 var app = express();
@@ -37,6 +37,7 @@ app.use('/static', express.static('public'));
 // ADD SOCKET IO MODULES HERE:
 //----------------------------------
 var exampleSocket = require('./socket_modules/exampleSocket');
+var netPlayer = require('./socket_modules/netplayer');
 
 //Pre Socket Processes Here (Mostly for Database connections)
 var loginDBConnection = require('./api_routes/loginDBConnection')();
@@ -54,13 +55,12 @@ io.on('connection', function(socket){
   //Add player to Players array
   gPlayers.addUser(socket_id);
 
-  //----------------------------------
-  // BIND SOCKET IO MODULES HERE:
-  //----------------------------------
-  exampleSocket(socket, io);
-
-
   socket.on('disconnect', function(socket){
     gPlayers.removeUser(socket_id);
   });
 });
+
+//----------------------------------
+// BIND SOCKET IO MODULES HERE:
+//----------------------------------
+netPlayer(io);
