@@ -5,8 +5,10 @@
 #public folder
 public
 
-# Copied from node.gitignore on github
+#Configuration Folder
+config.js
 
+# Copied from node.gitignore on github
 
 # Logs
 logs
