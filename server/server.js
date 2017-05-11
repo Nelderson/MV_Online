@@ -1,6 +1,6 @@
 //=============================================================================
 // Nelderson's Online Core Server
-// Version: 0.1.0 - March 10th, 2017
+// Version: 0.2.0 - May 11th, 2017
 //=============================================================================
 var express = require('express');
 var app = express();
@@ -10,7 +10,6 @@ var config = require('./configurations/config');
 var bodyParser = require('body-parser');
 var logger = require('morgan'); //For development
 var socketioJwt = require('socketio-jwt');
-var gPlayers = require('./global'); //Players array stored in memory
 
 
 app.use(logger('dev'));//For development
@@ -32,12 +31,10 @@ app.use('/example',require('./api_routes/example.js'));
 
 //Static Server - Used to serve static files (HTNL,PNG,etc.)
 app.use('/static', express.static('public'));
-
 //----------------------------------
 // ADD SOCKET IO MODULES HERE:
 //----------------------------------
 var exampleSocket = require('./socket_modules/exampleSocket');
-var netPlayer = require('./socket_modules/netplayer');
 
 //Pre Socket Processes Here (Mostly for Database connections)
 var loginDBConnection = require('./api_routes/loginDBConnection')();
@@ -50,17 +47,13 @@ io.set('authorization', socketioJwt.authorize({
 
 //When first connected to Socket.io
 io.on('connection', function(socket){
-  //ID needs to be locally stored to avoid scope issues
-  var socket_id = socket.id;
-  //Add player to Players array
-  gPlayers.addUser(socket_id);
-
-  socket.on('disconnect', function(socket){
-    gPlayers.removeUser(socket_id);
+  io.clients(function(error, clients){
+    if (error) throw error;
+    console.log("There are "+clients.length+" players connected");
   });
 });
 
 //----------------------------------
 // BIND SOCKET IO MODULES HERE:
 //----------------------------------
-netPlayer(io);
+exampleSocket(io);
