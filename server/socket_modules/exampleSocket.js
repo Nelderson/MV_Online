@@ -1,8 +1,11 @@
-module.exports = function (socket, io) {
+module.exports = function (sio) {
+  //Set IO Roomspace
+  var io = sio.of('/example');
 
-    socket.emit('testToClient', {test: 'This is awesome!!!!'});
-
-    socket.on('testFromClient', function(data){
-      console.log(data);
+  //Initialize socket
+  io.on('connection', function(socket){
+    socket.on('test',function(data){
+	    console.log('test');
     });
+  });
 };
