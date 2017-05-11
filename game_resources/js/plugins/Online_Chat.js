@@ -5,7 +5,7 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
-// Version: 1.0.0
+// Version: 1.0.1
 //=============================================================================
 
 //=============================================================================
@@ -122,6 +122,7 @@ var Nasty = Nasty || {};
  * =====================
  *
  * ToggleChat - Turns Chat Windows On/Off
+ * SendChatMessage - Sends the message in the chat input window.
  *
  */
  //=============================================================================
@@ -184,11 +185,11 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 //  GAME CHAT code
 //=============================================================================
 
-    var OnlineChat_createDisplayObj_Scene_Map = Scene_Map.prototype.createDisplayObjects;
-    Scene_Map.prototype.createDisplayObjects = function() {
-      OnlineChat_createDisplayObj_Scene_Map.call(this);
-      this.createChatDOMElements();
-    };
+  var OnlineChat_createDisplayObj_Scene_Map = Scene_Map.prototype.createDisplayObjects;
+  Scene_Map.prototype.createDisplayObjects = function() {
+    OnlineChat_createDisplayObj_Scene_Map.call(this);
+    this.createChatDOMElements();
+  };
 
    Scene_Map.prototype.createChatDOMElements = function(){
      //Chat Bar for Inputing messages
@@ -239,6 +240,13 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
      this.chatinput.style.left = inputWinOffsetX +'px';
      this.txtarea.style.left = textWinOffsetX + 'px';
      this.txtarea.style.top = textWinOffsetY + 'px';
+
+     var that = this;
+     $("#chatInput").keypress(function(e){
+ 			if (e.which == 13) { //enter
+ 				that.sendChatMessage();
+ 			}
+ 		});
    };
 
    var Online_Chat_SceneMap_isMenuCalled_alias = Scene_Map.prototype.isMenuCalled;
@@ -265,20 +273,24 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
    Scene_Map.prototype.updateChat = function(){
      if (document.activeElement===document.getElementById('chatInput')){
        if (Input.isTriggered('ok')){
-         var value = document.getElementById('chatInput').value;
-         value = value.trim();
-         if (value==='') return;
-         //Emit message to server
-         socket.emit('clientMessage',{
-           message: value
-         });
-         document.getElementById('chatInput').value = '';
+         this.sendChatMessage();
        }
      }
      //Toggle Chat Windows On/Off
      if (Input.isTriggered('chat')){
        this.toggleChat();
      }
+   };
+
+   Scene_Map.prototype.sendChatMessage = function(){
+     var value = document.getElementById('chatInput').value;
+     value = value.trim();
+     if (value==='') return;
+     //Emit message to server
+     socket.emit('clientMessage',{
+       message: value
+     });
+     document.getElementById('chatInput').value = '';
    };
 
    Scene_Map.prototype.toggleChat = function(){
@@ -314,10 +326,15 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
            SceneManager._scene.toggleChat();
          }
        }
+       if (command.toUpperCase() === 'SENDCHATMESSAGE'){
+         if (SceneManager._scene instanceof Scene_Map){
+           SceneManager._scene.sendChatMessage();
+         }
+       }
      };
 
   //Re-Map Input Keys
-  Input.keyMapper[chatKeyCode] = 'chat'; // ~
+  Input.keyMapper[chatKeyCode] = 'chat';
   Input.keyMapper['90'] = 'none'; // Z
   Input.keyMapper['32'] = 'none'; // SpaceBar
 })();
