@@ -100,7 +100,7 @@ router.post('/login', function(req, res){
       rank: account.rank
     };
 
-    crypto.pbkdf2(req.body.password, account.salt, 25000, 512, function(err, hashRaw){
+    crypto.pbkdf2(req.body.password, account.salt, 25000, 512, 'sha256', function(err, hashRaw){
       var hpass = new Buffer(hashRaw, 'binary').toString('hex');
       if (account.hash == hpass) {
         if (!account.activated){
