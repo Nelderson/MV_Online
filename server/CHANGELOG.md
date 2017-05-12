@@ -3,7 +3,10 @@
 ## Summary
 There are 2 main points that are different from 0.1.0
 
-- package.json has been updated with new versions of all the project's dependencies.
+- package.json has been updated with new versions of all the project's dependencies.  To update all dependencies simply run the install command again after updating the server:
+```bash
+npm install
+```
 
 - With these newer packages the default method for registration and login have been changed.  Registration and login by default now use sha256 encryption.  This will not allow you to use the database already there unless you decide not to update your package.json and stick with previous versions.
 
