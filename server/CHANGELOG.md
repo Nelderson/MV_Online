@@ -14,5 +14,5 @@ There are 2 main points that are different from 0.1.0
 - You'll also need to change line 103 to:
 
 ```js
-crypto.pbkdf2(req.body.password, account.salt, 25000, 512, 'sha256', function(err, hashRaw){
+crypto.pbkdf2(req.body.password, account.salt, 25000, 512, 'sha1', function(err, hashRaw){
 ```
