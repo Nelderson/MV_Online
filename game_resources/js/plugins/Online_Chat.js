@@ -5,7 +5,7 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
-// Version: 1.0.1
+// Version: 1.0.2
 //=============================================================================
 
 //=============================================================================
@@ -230,8 +230,11 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
        this.txtarea.style.backgroundImage = "url('img/pictures/"+textWinBackPic+".png')";
      }
      //Add and adjust both DOM elements
-     document.body.appendChild(this.chatinput);
      document.body.appendChild(this.txtarea);
+     document.body.appendChild(this.chatinput);
+     //--Mobile fix for input--
+     $("#chatInput").tap(function(){$("#chatInput").focus();});
+     //-------------------------
      Graphics._centerElement(this.chatinput);
      Graphics._centerElement(this.txtarea);
      this.chatinput.style.width = inputWinWidth +'px';
@@ -297,6 +300,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
      if (document.getElementById('txtarea').style.visibility ==='hidden'){
        document.getElementById('txtarea').style.visibility = 'visible';
        document.getElementById('chatInput').style.visibility = 'visible';
+       $("#chatInput").focus();
      }else{
        document.getElementById('txtarea').style.visibility = 'hidden';
        document.getElementById('chatInput').style.visibility = 'hidden';

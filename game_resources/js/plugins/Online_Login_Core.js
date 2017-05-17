@@ -5,7 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
-// Version: 1.1.0
+// Version: 1.1.1
 //=============================================================================
 
 //=============================================================================
@@ -130,8 +130,12 @@ var Nasty = Nasty || {};
 					that.registerAttempt();
 				}
 			});
-			$("#btnSubmit").click(function(){that.registerAttempt();});
-			$("#btnCancel").click(function(){that.createLoginForm();});
+      $("#regUsername").tap(function(){$("#regUsername").focus();});
+      $("#regEmail").tap(function(){$("#regEmail").focus();});
+      $("#regPassword").tap(function(){$("#regPassword").focus();});
+      $("#btnSubmit").bind("click touchstart",function(){that.registerAttempt();});
+      $("#btnCancel").bind("click touchstart",function(){that.createLoginForm();});
+
 		};
 	// Testing purpose, need to be rewritten into something more modulable,
 	// maybe using template file?
@@ -163,8 +167,11 @@ var Nasty = Nasty || {};
 				that.connectAttempt();
 			}
 		});
-		$("#btnConnect").click(function(){that.connectAttempt();});
-		$("#btnRegister").click(function(){that.createRegistrationForm();});
+    $("#inputUsername").tap(function(){$("#inputUsername").focus();});
+    $("#inputPassword").tap(function(){$("#inputPassword").focus();});
+		$("#btnConnect").bind("click touchstart",function(){that.connectAttempt();});
+		$("#btnRegister").bind("click touchstart",function(){that.createRegistrationForm();});
+    $("#inputUsername").focus();
 	};
 
 	MMO_Scene_Title.prototype.createActivationForm = function() {
@@ -184,10 +191,9 @@ var Nasty = Nasty || {};
 		$(".login-input").keypress(function(e){
 			if (e.which == 13) { //enter
 				that.createLoginForm();
-				//that.activationAttempt();
 			}
 		});
-		$("#btnActLogin").click(function(){that.createLoginForm();});
+    $("#btnActLogin").bind("click touchstart",function(){that.createLoginForm();});
 	};
 
 	MMO_Scene_Title.prototype.displayError = function(msg) {
