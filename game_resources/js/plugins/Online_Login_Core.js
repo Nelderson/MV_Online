@@ -5,7 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
-// Version: 1.1.1
+// Version: 1.1.2
 //=============================================================================
 
 //=============================================================================
@@ -130,9 +130,9 @@ var Nasty = Nasty || {};
 					that.registerAttempt();
 				}
 			});
-      $("#regUsername").tap(function(){$("#regUsername").focus();});
-      $("#regEmail").tap(function(){$("#regEmail").focus();});
-      $("#regPassword").tap(function(){$("#regPassword").focus();});
+      //$("#regUsername").tap(function(){$("#regUsername").focus();});
+      //$("#regEmail").tap(function(){$("#regEmail").focus();});
+      //$("#regPassword").tap(function(){$("#regPassword").focus();});
       $("#btnSubmit").bind("click touchstart",function(){that.registerAttempt();});
       $("#btnCancel").bind("click touchstart",function(){that.createLoginForm();});
 
@@ -167,8 +167,8 @@ var Nasty = Nasty || {};
 				that.connectAttempt();
 			}
 		});
-    $("#inputUsername").tap(function(){$("#inputUsername").focus();});
-    $("#inputPassword").tap(function(){$("#inputPassword").focus();});
+    //$("#inputUsername").tap(function(){$("#inputUsername").focus();});
+    //$("#inputPassword").tap(function(){$("#inputPassword").focus();});
 		$("#btnConnect").bind("click touchstart",function(){that.connectAttempt();});
 		$("#btnRegister").bind("click touchstart",function(){that.createRegistrationForm();});
     $("#inputUsername").focus();
