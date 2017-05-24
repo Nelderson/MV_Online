@@ -10,7 +10,7 @@ Installation
 
 Use `git clone` or download and unzip to the directory of your choice.
 
-Run `npm install` to download all dependencies for the server
+Run `npm install` to download all dependencies for the server. Use `npm install -d` for windows users
 
 After configuring the server run `npm start` to start the server
 
@@ -47,20 +47,22 @@ Add the files from the `game_resources/js/libs` folder to your own `js/libs` fol
 
 Modify your `index.html` file in your game to add this in the header:
 
-`````
+```html
 <!-- Nel Add -->
-       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-       <link rel="stylesheet" type="text/css" href="./css/MMO.css">
+<link rel="stylesheet" type="text/css" href="./css/bootstrap3.3.5.min.css" >
+<link rel="stylesheet" type="text/css" href="./css/fontawesome4.7.0.min.css" >
+<link rel="stylesheet" type="text/css" href="./css/MMO.css">
 <!-- Nel Add -->
-`````
+```
 
 And this in the body:
 
-`````
+```html
 <!-- Nel Add -->
-        <script type="text/javascript" src="./js/libs/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="./js/libs/crypto.sha1.js"></script>
-        <script type="text/javascript" src="./js/libs/socket.io.js"></script>
+<script type="text/javascript" src="./js/libs/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="./js/libs/jquerymobile1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/jquerymobile1.4.5.min.css">
+<script type="text/javascript" src="./js/libs/crypto.sha1.js"></script>
+<script type="text/javascript" src="./js/libs/socket.io.js"></script>
 <!-- Nel Add -->
-`````
+```
