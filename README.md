@@ -50,7 +50,7 @@ Modify your `index.html` file in your game to add this in the header:
 ```html
 <!-- Nel Add -->
 <link rel="stylesheet" type="text/css" href="./css/bootstrap3.3.5.min.css" >
-<link rel="stylesheet" type="text/css" href="./css/fontawesome4.7.0.min.css" >
+<link rel="stylesheet" type="text/css" href="./css/fontawesome4.4.0.min.css" >
 <link rel="stylesheet" type="text/css" href="./css/MMO.css">
 <!-- Nel Add -->
 ```
