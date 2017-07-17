@@ -67,13 +67,21 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 		var player = data.playerid;
 		var cx = data.x;
 		var cy = data.y;
+		var moveSpeed = data.moveSpeed;
+		var moveFrequenzy = data.moveFrequenzy;
 		var characterName = data.characterName;
-    var characterIndex = data.characterIndex;
+		var characterIndex = data.characterIndex;
+		
 		//Just in case users joined at the same time, make an event for them
 		if (networkMapEvents[player]===undefined){
 			var NetEvent = $gameMap.addNetworkPlayer(1, 1,player);
 			networkMapEvents[player] = NetEvent;
 		}
+		
+		// Update movement speed and frequenzy
+		networkMapEvents[player].setMoveSpeed(moveSpeed);
+		networkMapEvents[player].setMoveFrequency(frequenzy);
+		
 		//Continue on with updating xy position
 		var dir = data.direction;
 		networkMapEvents[player].moveStraight(dir);
@@ -138,6 +146,8 @@ Game_Player.prototype.moveByInput = function() {
 							direction: direction,
 							x: this.x,
 							y: this.y,
+							moveSpeed: this.realMoveSpeed(),
+							moveFrequenzy: this.moveFrequency(),
 							characterName: this._characterName,
 							characterIndex: this._characterIndex
 						});
