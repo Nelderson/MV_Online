@@ -2,7 +2,7 @@ var Imported = Imported || {};
 Imported.Online_Main_Core = true;
 //=============================================================================
 // Online Main Core
-// Version: 1.1.0
+// Version: 1.1.1
 //=============================================================================
 
 //=============================================================================
@@ -28,10 +28,13 @@ Imported.Online_Main_Core = true;
  */
  //=============================================================================
 
+ var $gameNetwork = null;
+
  var Nel_Online_Core_dataCreateGameObj =  DataManager.createGameObjects;
  DataManager.createGameObjects = function() {
     Nel_Online_Core_dataCreateGameObj.call(this);
-    $gameNetwork = new Game_Network();
+    //Keep gameNetwork the same for New Game to keep login info
+    $gameNetwork = $gameNetwork || new Game_Network();
  };
 
  var Nel_MainCore_Online_PluginOpt = $plugins.filter(function(p)
