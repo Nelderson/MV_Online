@@ -66,3 +66,14 @@ And this in the body:
 <script type="text/javascript" src="./js/libs/socket.io.js"></script>
 <!-- Nel Add -->
 ```
+
+
+-------------
+If you are hosting the main part of your game on a separate server you'll need to add this into your server.js file to allow outside requests coming through to your API/Socket requests:
+
+```javascript
+app.use(function(req,res,next){
+	res.setHeader('Access-Control-Allow-Origin', 'http://yourwebsitetoallow.com');
+	next();
+});
+```
