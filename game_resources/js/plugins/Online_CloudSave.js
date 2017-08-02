@@ -1,5 +1,5 @@
 /*
-Online Cloud Save v.0.1.0
+Online Cloud Save v.0.1.1
 
 Take data from one source and be able to load it on other devices
 
@@ -15,6 +15,12 @@ Sign in > Check the Database > Have data? > Load from database
       var data = LZString.compressToBase64(json);
       $.post($gameNetwork._serverURL+'/cloudsave/savetocloud', {savedata: data});
     }
+  };
+
+  //Overwrite Save Command in Menu
+  Scene_Menu.prototype.commandSave = function() {
+      DataManager.saveGameWithoutRescue(2);
+      this._commandWindow.processCancel();
   };
 
   DataManager.loadGameWithoutRescue = function(savefileId) {
