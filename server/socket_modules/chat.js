@@ -1,4 +1,7 @@
-var config = require('./../configurations/chat');
+var chatConfig = require('./../configurations/chat');
+var config = require('./../configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
+
 module.exports = function (sio) {
 	var io = sio.of('/chat');
 
@@ -10,9 +13,9 @@ module.exports = function (sio) {
 		socket.on('clientMessage',function(data) {
 			data.id = username;
 			io.emit('messageServer',data);
-			
-			if (config.enableLogging)
-				console.log(username + ': ' + data.message);
+
+			if (chatConfig.enableLogging)
+				log.info(username + ': ' + data.message);
 		});
 	});
 };
