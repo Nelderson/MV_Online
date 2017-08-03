@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var express = require('express');
 var authAPI = require('../authenticateAPI.js');
 var router = express.Router();
+var config = require('../configurations/config');
 var log = require('tracer').colorConsole(config.loggingConfig);
 
 var Save = new mongoose.Schema({
