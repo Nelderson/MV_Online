@@ -2,6 +2,8 @@ var mongoose = require("mongoose");
 var express = require('express');
 var authAPI = require('../authenticateAPI.js');
 var router = express.Router();
+var config = require('../configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
 
 var Save = new mongoose.Schema({
     username: {type: String, required: true, index: { unique: true}},
@@ -19,7 +21,7 @@ router.use(function(req,res,next){
 router.get('/loadfromcloud', function(req, res){
   var name = req.decoded.name;
   Saves.findOne({username: name}, function(err,account){
-    if (err) console.log(err);
+    if (err) log.error(err);
     if (account){
       return res.status(200).send(account.savedata);
     }else{
@@ -35,11 +37,11 @@ router.post('/savetocloud', function(req, res){
   var email = req.decoded.email;
   var savedata = req.body.savedata;
   Saves.findOne({username: name}, function(err,account){
-    if (err) console.log(err);
+    if (err) log.error(err);
     if (account){
       //Update save data to database
         Saves.findOneAndUpdate({username: name}, {$set: {savedata:savedata}},function(err,data1){
-          if (err) console.log(err);
+          if (err) log.error(err);
           return res.status(200).send();
         });
     }else{
@@ -50,7 +52,7 @@ router.post('/savetocloud', function(req, res){
         savedata: savedata,
       });
       newUser.save(function(err,data){
-        if (err) console.log(err);
+        if (err) log.error(err);
         return res.status(200).send();
       });
     }

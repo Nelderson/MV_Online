@@ -1,6 +1,6 @@
 {
   "name": "mvonline",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Rpgmaker MV Online Server",
   "main": "server.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "passport-local-mongoose": "^4.0.0",
     "socket.io": "^1.7.3",
     "socketio-jwt": "^4.5.0",
+    "tracer": "^0.8.9",
     "swearjar": "^0.2.0"
   },
   "author": "Nelderson",

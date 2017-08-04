@@ -1,10 +1,12 @@
 module.exports = function(){
   var config = require('../configurations/config');
   var mongoose = require('mongoose');
+  var log = require('tracer').colorConsole(config.loggingConfig);
+
   //Mongo DB Database Connection
   mongoose.connect(config.mongoDBconnect, function(err) {
       if (err) {
-        console.log(err);
+        log.error(err);
       }
     });
 };

@@ -1,4 +1,6 @@
-var config = require('./../configurations/chat');
+var chatConfig = require('./../configurations/chat');
+var config = require('./../configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
 var swearjar = require('swearjar');
 
 module.exports = function (sio) {
@@ -18,7 +20,7 @@ module.exports = function (sio) {
 			io.emit('messageServer',data);
 
 			if (config.enableLogging){
-				console.log(username + ': ' + data.message);
+				log.info(username + ': ' + data.message);
 			}			
 		});
 	});
