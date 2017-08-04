@@ -71,17 +71,17 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 		var moveFrequenzy = data.moveFrequenzy;
 		var characterName = data.characterName;
 		var characterIndex = data.characterIndex;
-		
+
 		//Just in case users joined at the same time, make an event for them
 		if (networkMapEvents[player]===undefined){
 			var NetEvent = $gameMap.addNetworkPlayer(1, 1,player);
 			networkMapEvents[player] = NetEvent;
 		}
-		
+
 		// Update movement speed and frequenzy
 		networkMapEvents[player].setMoveSpeed(moveSpeed);
-		networkMapEvents[player].setMoveFrequency(frequenzy);
-		
+		networkMapEvents[player].setMoveFrequency(moveFrequenzy);
+
 		//Continue on with updating xy position
 		var dir = data.direction;
 		networkMapEvents[player].moveStraight(dir);
