@@ -15,7 +15,8 @@
     "nodemailer": "^4.0.1",
     "passport-local-mongoose": "^4.0.0",
     "socket.io": "^1.7.3",
-    "socketio-jwt": "^4.5.0"
+    "socketio-jwt": "^4.5.0",
+    "swearjar": "^0.2.0"
   },
   "author": "Nelderson",
   "license": "MIT"
