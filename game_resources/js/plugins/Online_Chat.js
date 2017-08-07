@@ -5,13 +5,13 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
-// Version: 1.0.2
+// Version: 1.0.3
 //=============================================================================
 
 //=============================================================================
  /*:
  * @plugindesc Online Chat for Neldersons Online Core
- *<Online_Chat>
+ * <Online_Chat>
  * @author Nelderson
  *
  * @param Chat Key Code
@@ -33,9 +33,6 @@ var Nasty = Nasty || {};
  * @param Chat Text Color
  * @desc Color of chat text in chat window
  * @default #000000
- *
- * @param ===Chat Text Window===
- * @desc
  *
  * @param Chat Text Window Width
  * @desc Chat Window width
@@ -68,9 +65,6 @@ var Nasty = Nasty || {};
  * @param Chat Text Background Picture
  * @desc Background Pic from img/pictures folder instead of Background Color
  * @default
- *
- * @param ===Chat Input Window===
- * @desc
  *
  * @param Chat Input Window Width
  * @desc Chat Input Window width
@@ -290,9 +284,9 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
      value = value.trim();
      if (value==='') return;
      //Emit message to server
-     socket.emit('clientMessage',{
-       message: value
-     });
+       socket.emit('clientMessage',{
+         message: value
+       });
      document.getElementById('chatInput').value = '';
    };
 
