@@ -13,7 +13,7 @@ module.exports = function (sio) {
 
 		socket.on('clientMessage',function(data) {
 			data.id = username;
-			if (data.profanity){
+			if (config.profanityFilter){
 				data.message = swearjar.censor(data.message);
 			}
 

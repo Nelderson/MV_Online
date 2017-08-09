@@ -5,7 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
-// Version: 1.0.0
+// Version: 1.0.4
 //=============================================================================
 
 //=============================================================================
@@ -168,6 +168,16 @@ Scene_Map.prototype.start = function() {
 		}
 		socket.emit('CheckPlayers',mapId.toString());
 	}
+};
+
+//==========================================//
+//Cloudsave Fix for null sprites being saved
+//==========================================//
+var Online_NetPlayers_Map_CallMenu_Alias = Scene_Map.prototype.callMenu;
+Scene_Map.prototype.callMenu = function() {
+  $gameMap.clearAllNetworkPlayerEvents();
+  networkMapEvents = {};
+  Online_NetPlayers_Map_CallMenu_Alias.call(this);
 };
 
 //========================//

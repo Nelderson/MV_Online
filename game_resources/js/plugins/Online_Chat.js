@@ -98,10 +98,6 @@ var Nasty = Nasty || {};
  * @desc Background Pic from img/pictures folder instead of Background Color
  * @default
  *
- * @param Profanity Filter
- * @desc Replace blacklisted words with asterixes
- * @default true
- *
  * @help
  * ============================================================================
  * Introduction and Instructions
@@ -153,8 +149,6 @@ var Nasty = Nasty || {};
   var chatUserColor = Nasty.Parameters['Chat Username Color'];
   var chatTextColor = Nasty.Parameters['Chat Text Color'];
   var roomMapNameFlag = Nasty.Parameters['Room Name by Map'];
-
-  var profanityFilter = Nasty.Parameters['Profanity Filter'];
 
 var OnlineMV_ChatSystem_SocketConn_Alias = Game_Network.prototype.connectSocketsAfterLogin;
 Game_Network.prototype.connectSocketsAfterLogin = function(){
@@ -291,8 +285,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
      if (value==='') return;
      //Emit message to server
        socket.emit('clientMessage',{
-         message: value,
-         profanity: profanityFilter
+         message: value
        });
      document.getElementById('chatInput').value = '';
    };
