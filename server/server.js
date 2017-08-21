@@ -21,6 +21,9 @@ log.info('Server is on bruh and running on port: '+ config.port);
 
 //----------------------------------
 // Allow Cors Domain:
+//   res.header('Access-Control-Allow-Origin', '*');
+//   This Allow for all client acces to your server
+//   Change for your IP or Domain or use localhost !
 //----------------------------------
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
