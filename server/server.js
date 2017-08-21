@@ -21,7 +21,7 @@ log.info('Server is on bruh and running on port: '+ config.port);
 
 //----------------------------------
 // Allow Cors Domain:
-//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Origin', 'MyDomainHere');
 //   This Allow for all client acces to your server
 //   Change for your IP or Domain or use localhost !
 //----------------------------------
