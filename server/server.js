@@ -15,9 +15,23 @@ var log = require('tracer').colorConsole(config.loggingConfig);
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(allowCrossDomain);
 
 server.listen(config.port);
 log.info('Server is on bruh and running on port: '+ config.port);
+
+//----------------------------------
+// Cors Domain
+//----------------------------------
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, x-access-token');
+    if (req.method === "OPTIONS") 
+        res.send(200);
+    else 
+        next();
+}
 
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
