@@ -20,7 +20,7 @@ server.listen(config.port);
 log.info('Server is on bruh and running on port: '+ config.port);
 
 //----------------------------------
-// Cors Domain
+// Allow Cors Domain:
 //----------------------------------
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
