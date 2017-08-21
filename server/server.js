@@ -15,7 +15,6 @@ var log = require('tracer').colorConsole(config.loggingConfig);
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(allowCrossDomain);
 
 server.listen(config.port);
 log.info('Server is on bruh and running on port: '+ config.port);
@@ -36,6 +35,10 @@ var allowCrossDomain = function(req, res, next) {
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
 //----------------------------------
+
+//Allow Cors
+
+app.use(allowCrossDomain);
 
 // No Authentication required:
 app.use('/',require('./api_routes/login_routes'));
