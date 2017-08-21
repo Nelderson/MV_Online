@@ -3,12 +3,13 @@ var Schema = mongoose.Schema;
 var express = require('express');
 var authAPI = require('../authenticateAPI.js');
 var router = express.Router();
+var config = require('./configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
 
 //============Config Section=============//
 //Set this the same as client anonymous flag
 var anonymous = true;
 //======================================//
-
 
  if (!anonymous){
   var Metric = new Schema({
@@ -48,7 +49,7 @@ if (!anonymous){
     if (account){
       //Metrics collection started
       Metrics.findOneAndUpdate({username: name}, {$push: {data:data}},function(err,data1){
-        if (err) console.log(err);
+        if (err) log.error(err);
         return res.status(200).send('Done');
       });
     }else{
@@ -59,7 +60,7 @@ if (!anonymous){
         data: [data]
       });
       newUser.save(function(err,data){
-        if (err)console.log(err);
+        if (err) log.error(err);
         return res.status(200).send('Done');
       });
     }
@@ -70,7 +71,7 @@ if (!anonymous){
     if (account){
       //Metrics collection started
       Metrics.findOneAndUpdate({_id: id}, {$push: {data:data}},function(err,data1){
-        if (err) console.log(err);
+        if (err) log.error(err);
         return res.status(200).send(id);
       });
     }else{
@@ -82,7 +83,7 @@ if (!anonymous){
       });
       newUser.save(function(err,data){
         var uid = newUser._id;
-        if (err) console.log(err);
+        if (err) log.error(err);
         return res.status(200).send(uid);
       });
     }

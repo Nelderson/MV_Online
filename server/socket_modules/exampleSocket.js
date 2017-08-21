@@ -1,3 +1,6 @@
+var config = require('./../configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
+
 module.exports = function (sio) {
   //Set IO Roomspace
   var io = sio.of('/example');
@@ -5,7 +8,7 @@ module.exports = function (sio) {
   //Initialize socket
   io.on('connection', function(socket){
     socket.on('test',function(data){
-	    console.log('test');
+	    log.info('test');
     });
   });
 };

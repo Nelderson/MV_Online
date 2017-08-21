@@ -1,6 +1,6 @@
 //=============================================================================
 // Nelderson's Online Core Server
-// Version: 0.2.0 - May 11th, 2017
+// Version: 0.2.1 - August 3rd, 2017
 //=============================================================================
 var express = require('express');
 var app = express();
@@ -10,14 +10,14 @@ var config = require('./configurations/config');
 var bodyParser = require('body-parser');
 var logger = require('morgan'); //For development
 var socketioJwt = require('socketio-jwt');
-
+var log = require('tracer').colorConsole(config.loggingConfig);
 
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 server.listen(config.port);
-console.log('Server is on bruh and running on port: '+config.port);
+log.info('Server is on bruh and running on port: '+ config.port);
 
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
@@ -49,7 +49,7 @@ io.set('authorization', socketioJwt.authorize({
 io.on('connection', function(socket){
   io.clients(function(error, clients){
     if (error) throw error;
-    console.log("There are "+clients.length+" players connected");
+    log.info("There are " + clients.length + " players connected");
   });
 });
 
