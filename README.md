@@ -55,10 +55,8 @@ Modify your `index.html` file in your game to add this in the header:
 <!-- Nel Add -->
 ```
 
-And this in the body,
-
-	Dont forget the change localhost for your IP or Domain :
-
+And this in the body, 
+   Dont forget the change localhost for your IP or Domain :
 ```html
 <!-- Nel Add -->
 <script type="text/javascript" src="./js/libs/jquery-2.1.4.min.js"></script>
