@@ -18,30 +18,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 server.listen(config.port);
 log.info('Server is on bruh and running on port: '+ config.port);
-
-//----------------------------------
-// Allow Cors Domain:
-//   res.header('Access-Control-Allow-Origin', 'MyDomainHere');
-//   This Allow for all client acces to your server
-//   Change for your IP or Domain or use localhost !
-//----------------------------------
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, x-access-token');
-    if (req.method === "OPTIONS") 
-        res.send(200);
-    else 
-        next();
-}
-
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
 //----------------------------------
 
-//Allow Cors
-
-app.use(allowCrossDomain);
+// Allow Cors
+app.use('AllowCrossDomain',require('./api_routes/cors'));
 
 // No Authentication required:
 app.use('/',require('./api_routes/login_routes'));
