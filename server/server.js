@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 server.listen(config.port);
 log.info('Server is on bruh and running on port: '+ config.port);
+
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
 //----------------------------------
