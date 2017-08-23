@@ -23,9 +23,6 @@ log.info('Server is on bruh and running on port: '+ config.port);
 // SET ROUTES FOR EXPRESS API HERE:
 //----------------------------------
 
-// Allow Cors
-app.use('AllowCrossDomain',require('./api_routes/cors'));
-
 // No Authentication required:
 app.use('/',require('./api_routes/login_routes'));
 
