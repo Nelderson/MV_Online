@@ -63,7 +63,7 @@ And this in the body:
 <script type="text/javascript" src="./js/libs/jquerymobile1.4.5.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./css/jquerymobile1.4.5.min.css">
 <script type="text/javascript" src="./js/libs/crypto.sha1.js"></script>
-<script type="text/javascript" src="http://Your-IP:8000/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="http://Your-IP-Or-Domain:8000/socket.io/socket.io.js"></script>
 <!-- Nel Add -->
 ```
 
