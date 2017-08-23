@@ -13,3 +13,4 @@ Configuration
 Add this line to the `API SECTION` section in the `server.js` file:
 
 `app.use('AllowCrossDomain',require('./api_routes/cors'));`
+
