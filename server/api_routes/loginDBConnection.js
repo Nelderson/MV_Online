@@ -4,7 +4,7 @@ module.exports = function(){
   var log = require('tracer').colorConsole(config.loggingConfig);
 
   //Mongo DB Database Connection
-  mongoose.connect(config.mongoDBconnect, function(err) {
+  mongoose.connect(config.mongoDBconnect, { useMongoClient: true }, function(err) {
       if (err) {
         log.error(err);
       }
