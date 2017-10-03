@@ -17,7 +17,8 @@
     "socket.io": "^1.7.3",
     "socketio-jwt": "^4.5.0",
     "tracer": "^0.8.9",
-    "swearjar": "^0.2.0"
+    "swearjar": "^0.2.0",
+    "require-all": "^2.2.0"
   },
   "author": "Nelderson",
   "license": "MIT"

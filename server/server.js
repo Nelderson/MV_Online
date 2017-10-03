@@ -22,7 +22,10 @@ log.info('Server is on bruh and running on port: '+ config.port);
 //----------------------------------
 // SET ROUTES FOR EXPRESS API HERE:
 //----------------------------------
-
+app.use(function(req,res,next){
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	next();
+});
 // No Authentication required:
 app.use('/',require('./api_routes/login_routes'));
 
@@ -31,10 +34,11 @@ app.use('/example',require('./api_routes/example.js'));
 
 //Static Server - Used to serve static files (HTNL,PNG,etc.)
 app.use('/static', express.static('public'));
+
+
 //----------------------------------
 // ADD SOCKET IO MODULES HERE:
 //----------------------------------
-var exampleSocket = require('./socket_modules/exampleSocket');
 
 //Pre Socket Processes Here (Mostly for Database connections)
 var loginDBConnection = require('./api_routes/loginDBConnection')();
@@ -53,7 +57,9 @@ io.on('connection', function(socket){
   });
 });
 
-//----------------------------------
-// BIND SOCKET IO MODULES HERE:
-//----------------------------------
-exampleSocket(io);
+var modules = require('require-all')({
+  dirname     :  __dirname + '/socket_modules',
+  resolve     : function (SocketModules) {
+    return new SocketModules(io);
+  }
+});
