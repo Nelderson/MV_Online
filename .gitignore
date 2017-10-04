@@ -2,13 +2,17 @@
 .DS_Store
 .DS_Store?
 
+# code editors
+.vscode/
+
 #public folder
 public
 
 #Configuration Folder
-config.js
-
-# Copied from node.gitignore on github
+mainConfig.js
+loginConfig.js
+databaseConfig.js
+chatConfig.js
 
 # Logs
 logs

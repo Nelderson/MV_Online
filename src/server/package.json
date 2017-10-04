@@ -7,18 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "express": "^4.15.2",
-    "jsonwebtoken": "^7.3.0",
-    "mongoose": "^4.9.5",
-    "morgan": "^1.8.1",
-    "nodemailer": "^4.0.1",
-    "passport-local-mongoose": "^4.0.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "jsonwebtoken": "^7.4.3",
+    "mongoose": "^4.12.0",
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.1.2",
+    "passport-local-mongoose": "^4.2.1",
+    "require-all": "^2.2.0",
     "socket.io": "^1.7.3",
     "socketio-jwt": "^4.5.0",
-    "tracer": "^0.8.9",
     "swearjar": "^0.2.0",
-    "require-all": "^2.2.0"
+    "tracer": "^0.8.11"
   },
   "author": "Nelderson",
   "license": "MIT"
