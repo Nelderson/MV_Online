@@ -3,7 +3,8 @@ MV Online Core Documentation
 
 Requirements
 -------------
-Node.js and RPGMaker MV
+- Node.JS
+- RPG Maker MV
 
 Installation
 -------------
@@ -15,10 +16,11 @@ Run `npm install` to download all dependencies for the server. Use `npm install 
 After configuring the server run `npm start` to start the server
 
 
-Server Configuration
+Configuration
 -------------
 
-Inside the  `server/configurations/config.js` file, there are several things to configure:
+Make a copy of both chatConfig.EXAMPLE.js and mainConfig.EXAMPLE.js rename these copies to chatConfig.js and mainConfig.js from there
+you need to modify the `server/configurations/mainConfig.js` file, there are several things to configure:
 
 `port` defines which port the server will run on (Default `8000`)
 
@@ -26,12 +28,11 @@ Inside the  `server/configurations/config.js` file, there are several things to 
 
 `firstHash` is the initial hashing secret for login system.  This is the same as the client plugin first hash.  Recommended that this be changed before putting in a production environment
 
-
 `mailFrom` when a user registers they recieve an email from this address.
+
 `smtps://username@gmail.com:password@smtp.gmail.com`  (Additional steps are required if you want to use gmail.)
 
 `actUrl`  Activation URL base for activation codes (Default:` http://localhost:8000/activate/`
-
 
 `mongoDBconnect` Link and credentials to MongoDB Database. `mongodb://username:password@linktomongodb.com:39504/collection`
 

@@ -6,6 +6,8 @@
 
   jwtSecret: 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
 
+  requireActivation: false,
+
   loggingConfig: {
     format : [
               "{{timestamp}} <{{title}}> {{message}}", //default format
