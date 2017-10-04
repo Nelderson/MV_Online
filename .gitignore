@@ -10,8 +10,6 @@ public
 
 #Configuration Folder
 mainConfig.js
-loginConfig.js
-databaseConfig.js
 chatConfig.js
 
 # Logs
