@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var express = require('express');
 var authAPI = require('../authenticateAPI.js');
 var router = express.Router();
-var config = require('./configurations/config');
+var config = require('./configurations/mainConfig');
 var log = require('tracer').colorConsole(config.loggingConfig);
 
 //============Config Section=============//

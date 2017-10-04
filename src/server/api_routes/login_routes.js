@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 var express = require('express');
-var config = require('../configurations/config');
+var config = require('../configurations/mainConfig');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport(config.mailFrom);
 var Account = require('./LoginSchema/Account');

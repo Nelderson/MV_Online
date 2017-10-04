@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan'); //For development
 var socketioJwt = require('socketio-jwt');
 
-var config = require('./configurations/config');
+var config = require('./configurations/mainConfig');
 var log = require('tracer').colorConsole(config.loggingConfig);
 
 app.use(logger('dev'));//For development
