@@ -55,7 +55,7 @@ Modify your `index.html` file in your game to add this in the header:
 <!-- Nel Add -->
 ```
 
-And this in the body:
+And this in the body, dont forget the change localhost for your IP or Domain :
 
 ```html
 <!-- Nel Add -->
@@ -63,7 +63,7 @@ And this in the body:
 <script type="text/javascript" src="./js/libs/jquerymobile1.4.5.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./css/jquerymobile1.4.5.min.css">
 <script type="text/javascript" src="./js/libs/crypto.sha1.js"></script>
-<script type="text/javascript" src="./js/libs/socket.io.js"></script>
+<script type="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
 <!-- Nel Add -->
 ```
 
