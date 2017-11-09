@@ -1,5 +1,5 @@
-var chatConfig = require('./../configurations/chat');
-var config = require('./../configurations/config');
+var chatConfig = require('./../configurations/chatConfig');
+var config = require('./../configurations/mainConfig');
 var log = require('tracer').colorConsole(config.loggingConfig);
 var swearjar = require('swearjar');
 

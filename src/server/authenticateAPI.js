@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-var config = require('./configurations/config');
+var config = require('./configurations/mainConfig');
 
 module.exports = function(req, res, next){
 

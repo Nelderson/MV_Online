@@ -1,4 +1,4 @@
-var config = require('./../configurations/config');
+var config = require('./../configurations/mainConfig');
 var log = require('tracer').colorConsole(config.loggingConfig);
 
 module.exports = function (sio) {

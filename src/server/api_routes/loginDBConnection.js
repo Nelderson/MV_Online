@@ -1,5 +1,5 @@
 module.exports = function(){
-  var config = require('../configurations/config');
+  var config = require('../configurations/mainConfig');
   var mongoose = require('mongoose');
   var log = require('tracer').colorConsole(config.loggingConfig);
 

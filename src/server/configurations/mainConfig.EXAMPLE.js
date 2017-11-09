@@ -1,10 +1,12 @@
-var Config = module.exports = {
+/* var Config = module.exports = {
   //---------------------
   //Main Configurations
   //---------------------
   port: 8000,
 
   jwtSecret: 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
+
+  requireActivation: false,
 
   loggingConfig: {
     format : [
@@ -38,4 +40,4 @@ var Config = module.exports = {
   //------------------------
 
   mongoDBconnect: 'mongodb://username:password@linktomongodb.com:39504/collection'
-};
+}; */
