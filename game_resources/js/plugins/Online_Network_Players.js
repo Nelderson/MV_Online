@@ -5,7 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
-// Version: 1.0.4
+// Version: 1.0.5
 //=============================================================================
 
 //=============================================================================
@@ -64,6 +64,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 	});
 
 	socket.on('NetworkPlayersXY', function(data){
+		if(!SceneManager._scene._spriteset) return;
 		var player = data.playerid;
 		var cx = data.x;
 		var cy = data.y;
