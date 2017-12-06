@@ -1,3 +1,4 @@
+//Version: 0.1.2 - Added MyID call to pass client username
 //Version: 0.1.1 - Cleanup of profanity filter.
 
 var chatConfig = require('./../configurations/chat');
@@ -13,15 +14,16 @@ module.exports = function (sio) {
 		var token = socket.client.request.decoded_token;
 		var username = token.name;
 
+		socket.emit('MyID', {name: username});
+
 		socket.on('clientMessage',function(data) {
-			data.id = username;
 			if (chatConfig.profanityFilter){
 				data.message = swearjar.censor(data.message);
 			}
 
 			io.emit('messageServer',data);
 
-			if (config.enableLogging){
+			if (chatConfig.enableLogging){
 				log.info(username + ': ' + data.message);
 			 }
 		});

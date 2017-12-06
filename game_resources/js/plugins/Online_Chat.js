@@ -5,7 +5,7 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
-// Version: 1.0.3
+// Version: 1.0.4 - Add function to enable/disable chat and chat by leader name
 //=============================================================================
 
 //=============================================================================
@@ -17,6 +17,10 @@ var Nasty = Nasty || {};
  * @param Chat Key Code
  * @desc Key code to toggle the chat on/off (Default F1 - 112)
  * @default 112
+ *
+ * @param Chat with Username or Character Name
+ * @desc 0=Username 1=Character Name (Leader of party)
+ * @default 0
  *
  * @param Input Character limit
  * @desc Limit the amount of characters per message
@@ -117,6 +121,8 @@ var Nasty = Nasty || {};
  *
  * ToggleChat - Turns Chat Windows On/Off
  * SendChatMessage - Sends the message in the chat input window.
+ * EnableChat - Enables chat to be opened
+ * DisableChat - Disables chat to be opened
  *
  */
  //=============================================================================
@@ -149,6 +155,9 @@ var Nasty = Nasty || {};
   var chatUserColor = Nasty.Parameters['Chat Username Color'];
   var chatTextColor = Nasty.Parameters['Chat Text Color'];
   var roomMapNameFlag = Nasty.Parameters['Room Name by Map'];
+  var NetPlayerChatNameType = Number(Nasty.Parameters['Chat with Username or Character Name']);
+
+  var networkName = '';
 
 var OnlineMV_ChatSystem_SocketConn_Alias = Game_Network.prototype.connectSocketsAfterLogin;
 Game_Network.prototype.connectSocketsAfterLogin = function(){
@@ -156,6 +165,11 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 
   $gameNetwork.connectSocket('chat','/chat',false);
   socket = $gameNetwork._socket.chat;
+  Nasty.chatEnabled = true;
+
+  socket.on('MyID',function(data){
+    networkName = data.name;
+	});
 
   socket.on('messageServer', function(data){
     var message = document.createElement('div');
@@ -280,17 +294,24 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
    };
 
    Scene_Map.prototype.sendChatMessage = function(){
+   if (NetPlayerChatNameType===1) networkName=$gameParty.leader()._name;
      var value = document.getElementById('chatInput').value;
      value = value.trim();
      if (value==='') return;
      //Emit message to server
        socket.emit('clientMessage',{
+         id: networkName,
          message: value
        });
      document.getElementById('chatInput').value = '';
    };
 
    Scene_Map.prototype.toggleChat = function(){
+     if (!Nasty.chatEnabled) {
+      document.getElementById('txtarea').style.visibility = 'hidden';
+      document.getElementById('chatInput').style.visibility = 'hidden';
+      return;
+     }
      if (document.getElementById('txtarea').style.visibility ==='hidden'){
        document.getElementById('txtarea').style.visibility = 'visible';
        document.getElementById('chatInput').style.visibility = 'visible';
@@ -328,6 +349,15 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
          if (SceneManager._scene instanceof Scene_Map){
            SceneManager._scene.sendChatMessage();
          }
+       }
+       if (command.toUpperCase() === 'ENABLECHAT'){
+          Nasty.chatEnabled = true;
+       }
+       if (command.toUpperCase() === 'DISABLECHAT'){
+          Nasty.chatEnabled = false;
+          if (SceneManager._scene instanceof Scene_Map){
+            SceneManager._scene.toggleChat();
+          }
        }
      };
 
