@@ -5,7 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
-// Version: 1.0.5
+// Version: 1.0.6 - Added names above characters with Nasty_Text_Pop_Events.js
 //=============================================================================
 
 //=============================================================================
@@ -22,21 +22,39 @@ var Nasty = Nasty || {};
  * @desc Event ID for Net Player Spawn Event
  * @default 1
  *
+ * @param Show Username or Character Name
+ * @desc 0=Username, 1=Character Name
+ * @default 0
+ *
+ * @param Show Name Above Players Head
+ * @type boolean
+ * @on Yes
+ * @off No
+ * @desc Shows Username/Character name over Players Head
+ * @default true
+ *
+ * @param Player Text Options
+ * @desc This refers to the number in Nasty_Text_Pop_Events for text options
+ * @default 1
+ *
+ * @param Net Player Text Options
+ * @desc This refers to the number in Nasty_Text_Pop_Events for text options
+ * @default 1
+ *
  * @help
  * ============================================================================
  * Introduction and Instructions
  * ============================================================================
- * This plugin allows you to see other players on the map
+ * This plugin allows you to see other players on the map.
+ * Add Nasty_Text_Pop_Events.js to see players names above their character
  *
- *  There are two plugin parameters:
+ *  Plugin Parameters:
  *
  *  1.  Net Player Map ID
  *      -The Map ID the Netplayer Spawn event is located
  *
  *  2.  Net Player Event ID
  *      -The Event ID the Netplayer Spawn event is located
- *
- *
  */
  //=============================================================================
 
@@ -45,6 +63,12 @@ var Nasty = Nasty || {};
 
 var NetPlayerMap = Nasty.Parameters['Net Player Map ID'];
 var NetPlayerEventID = Nasty.Parameters['Net Player Event ID'];
+var NetPlayerNameType = Number(Nasty.Parameters['Show Username or Character Name']);
+var showPlayersName = String(Nasty.Parameters['Show Name Above Players Head']);
+var playerTextOptions = (Number(Nasty.Parameters['Player Text Options'])-1);
+var netplayerTextOptions = (Number(Nasty.Parameters['Net Player Text Options'])-1);
+
+var networkName = '';
 var socket;
 var networkPlayerid = 0;
 var networkMapEvents = {};
@@ -61,11 +85,15 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 		networkPlayerid = data.id; //Set Network ID
 		currentRoom = data.room;
 		NetworkFlag = true;
+    if (NetPlayerNameType===0){
+      networkName = data.name;
+    }
 	});
 
 	socket.on('NetworkPlayersXY', function(data){
-		if(!SceneManager._scene._spriteset) return;
+    if(!SceneManager._scene._spriteset) return;
 		var player = data.playerid;
+    var name = data.name;
 		var cx = data.x;
 		var cy = data.y;
 		var moveSpeed = data.moveSpeed;
@@ -73,11 +101,13 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 		var characterName = data.characterName;
 		var characterIndex = data.characterIndex;
 
-		//Just in case users joined at the same time, make an event for them
+		//Make an event if net player isn't already there
 		if (networkMapEvents[player]===undefined){
-			var NetEvent = $gameMap.addNetworkPlayer(1, 1,player);
+			var NetEvent = $gameMap.addNetworkPlayer(1, 1,name);
 			networkMapEvents[player] = NetEvent;
 		}
+    networkMapEvents[player].namepop = name;
+    networkMapEvents[player].textpop_flag = true;
 
 		// Update movement speed and frequenzy
 		networkMapEvents[player].setMoveSpeed(moveSpeed);
@@ -95,23 +125,9 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 		networkMapEvents[player]._characterIndex = characterIndex;
 	 });
 
-
-
-	 socket.on('playersJoin',function(data){
-	 var room = data.room;
-	 var playerid = data.id;
-	 if (room !== currentRoom) return;
-	 if (playerid===networkPlayerid) return;
-	 if (networkMapEvents[playerid]===undefined){
-		 var NetEvent = $gameMap.addNetworkPlayer(1, 1, playerid);
-		 networkMapEvents[playerid] = NetEvent;
-	 }
-	 });
-
-
 	 socket.on('changeRoomVar', function(data){
 		 currentRoom = data;
-		 networkMapEvents = {}; //NEL TEST
+		 networkMapEvents = {};
 	 });
 
 	 socket.on('removePlayer', function(data){
@@ -139,12 +155,14 @@ Game_Player.prototype.moveByInput = function() {
 						direction = this.findDirectionTo(x, y);
 				}
 				if (direction > 0) {
+          if (NetPlayerNameType===1) networkName=$gameParty.leader()._name;
 					//Send x,y info to server
 						this.executeMove(direction);
 						if (NetworkFlag){
 						socket.emit('DestinationXY', {
 							playerid: networkPlayerid,
 							direction: direction,
+              name: networkName,
 							x: this.x,
 							y: this.y,
 							moveSpeed: this.realMoveSpeed(),
@@ -156,6 +174,34 @@ Game_Player.prototype.moveByInput = function() {
 				}
 		}
 };
+
+//=================================//
+//Player Refresh for Text Over Self
+//=================================//
+var NetPlayer_GmePlayer_refresh_alias = Game_Player.prototype.refresh;
+Game_Player.prototype.refresh = function() {
+  NetPlayer_GmePlayer_refresh_alias.call(this);
+  if (showPlayersName==='false') return;
+    if (NetPlayerNameType===1) {
+      this.namepop = $gameParty.leader()._name;
+    }else{
+      this.namepop = networkName;
+    }
+    this.setTextOptions(playerTextOptions);
+};
+
+var NetPlayer_SceneBase_popScene = Scene_Base.prototype.popScene;
+Scene_Base.prototype.popScene = function() {
+    NetPlayer_SceneBase_popScene.call(this);
+    $gamePlayer.refresh();
+};
+
+var NetPlayer_SceneBase_stop = Scene_Base.prototype.stop;
+Scene_Base.prototype.stop = function() {
+    NetPlayer_SceneBase_stop.call(this);
+    $gamePlayer.refresh();
+};
+
 //==============================//
 //Room Change When Changing Maps
 //==============================//
@@ -164,16 +210,13 @@ Scene_Map.prototype.start = function() {
 	NetPlayer_SceneMap_Start_Alias.call(this);
 	var mapId = $gameMap.mapId();
 	if (NetworkFlag){
-		if (currentRoom !== mapId.toString()){ //In case of menu or battle scene
+    //In case of menu or battle scene
+		if (currentRoom !== mapId.toString()){
 			socket.emit('changeRoom', mapId.toString());
 		}
-		socket.emit('CheckPlayers',mapId.toString());
 	}
 };
 
-//==========================================//
-//Cloudsave Fix for null sprites being saved
-//==========================================//
 var Online_NetPlayers_Map_CallMenu_Alias = Scene_Map.prototype.callMenu;
 Scene_Map.prototype.callMenu = function() {
   $gameMap.clearAllNetworkPlayerEvents();
@@ -194,7 +237,7 @@ DataManager.loadNetworkPlayerMapData();
 
 Game_Map.prototype.addNetworkPlayer = function(x,y,playerid) {
     var eId = this._events.length;
-    this._events[eId] = new Game_NetworkPlayer(this._mapId,eId,x,y);
+    this._events[eId] = new Game_NetworkPlayer(this._mapId,eId,x,y, playerid);
 	  SceneManager._scene._spriteset.createNetworkPlayer(eId);
 		return this._events[eId];
 };
@@ -259,10 +302,17 @@ function Game_NetworkPlayer() {
 Game_NetworkPlayer.prototype = Object.create(Game_Event.prototype);
 Game_NetworkPlayer.prototype.constructor = Game_NetworkPlayer;
 
-Game_NetworkPlayer.prototype.initialize = function(mapId,eventId,x,y) {
+Game_NetworkPlayer.prototype.initialize = function(mapId,eventId,x,y, name) {
 	Game_Event.prototype.initialize.call(this,mapId,eventId);
+  if (this.namepop===undefined){
+    console.log("You need Nasty_Text_Pop_Events for names to show!");
+  }
+  this.namepop = name;
   this._isNetworkPlayer = true;
   this.setPosition(x,y);
+  if (this.namepop){
+    this.setTextOptions(netplayerTextOptions);
+  }
 };
 
 Game_NetworkPlayer.prototype.event = function() {
