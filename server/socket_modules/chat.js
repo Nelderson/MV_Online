@@ -1,3 +1,5 @@
+//Version: 0.1.1 - Cleanup of profanity filter.
+
 var chatConfig = require('./../configurations/chat');
 var config = require('./../configurations/config');
 var log = require('tracer').colorConsole(config.loggingConfig);
@@ -13,7 +15,7 @@ module.exports = function (sio) {
 
 		socket.on('clientMessage',function(data) {
 			data.id = username;
-			if (config.profanityFilter){
+			if (chatConfig.profanityFilter){
 				data.message = swearjar.censor(data.message);
 			}
 
@@ -21,7 +23,7 @@ module.exports = function (sio) {
 
 			if (config.enableLogging){
 				log.info(username + ': ' + data.message);
-			}			
+			 }
 		});
 	});
 };
