@@ -5,6 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
+// Version: 1.1.4 - Added event switches for when users login multiple times
 // Version: 1.1.3
 //=============================================================================
 
@@ -21,6 +22,14 @@ var Nasty = Nasty || {};
  * @param socket.io connection
  * @desc Automatically connects to socket once signed in.
  * @default true
+ *
+ * @param Switch on First Shutdown
+ * @desc Original user that is logged in will have this switch flipped
+ * @default 1
+ *
+ * @param Switch on Second Shutdown
+ * @desc Second user that is logged in will have this switch flipped
+ * @default 2
  *
  * @help
  * ============================================================================
@@ -228,6 +237,12 @@ var Nasty = Nasty || {};
 						$("#ErrorPrinter").fadeOut({duration: 1000}).html("");
             if (ioFlag==='true'){
 							$gameNetwork.connectSocket('main','/');
+              $gameNetwork._socket.main.on('firstShutDown',function(data){
+                $gameSwitches.setValue(Number(Nasty.Parameters['Switch on First Shutdown']),true);
+              });
+              $gameNetwork._socket.main.on('secondShutDown',function(data){
+                $gameSwitches.setValue(Number(Nasty.Parameters['Switch on Second Shutdown']),true);
+              });
 						}
             $gameNetwork.connectSocketsAfterLogin();
             that.fadeOutAll();
@@ -235,23 +250,6 @@ var Nasty = Nasty || {};
 						return that.displayInfo("Ok : "+data.msg);
 					}
       });
-	};
-
-	MMO_Scene_Title.prototype.activationAttempt = function(){
-		var that = this;
-		$socket.on("activationResponse", function(data){
-			console.log('DATA ' + data);
-			if (data.err)
-				return that.displayError("Error : "+data.err);
-			if (data.msg==='success') {
-				$("#ErrorPrinter").fadeOut({duration: 1000}).html("");
-				that.fadeOutAll();
-			    SceneManager.goto(Scene_Map);
-			}
-		});
-		$socket.emit("activation", {
-			actcode : actcode
-		});
 	};
 
 	MMO_Scene_Title.prototype.registerAttempt = function(){

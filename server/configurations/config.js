@@ -33,6 +33,9 @@ var Config = module.exports = {
   //Activation API Location
   actUrl: 'http://localhost:8000/activate/',
 
+  //Allows only one logged in user at a time.
+  enforceOneUser: false,
+
   //------------------------
   //Database Configurations
   //------------------------

@@ -1,6 +1,7 @@
 //=============================================================================
 // Nelderson's Online Core Server
-// Version: 0.2.1 - August 3rd, 2017
+// Version: 0.2.2 - Added abilty to limit users to one login.
+// Version: 0.2.1
 //=============================================================================
 var express = require('express');
 var app = express();
@@ -11,6 +12,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan'); //For development
 var socketioJwt = require('socketio-jwt');
 var log = require('tracer').colorConsole(config.loggingConfig);
+var loggedInUsers = {};
 
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
@@ -47,9 +49,26 @@ io.set('authorization', socketioJwt.authorize({
 
 //When first connected to Socket.io
 io.on('connection', function(socket){
+
+  if(config.enforceOneUser){
+    var username = socket.client.request.decoded_token.name;
+    if (loggedInUsers[username]){
+      socket.to(loggedInUsers[username]).emit('firstShutDown',{});
+      socket.emit('secondShutDown',{});
+      io.of('/').connected[loggedInUsers[username]].disconnect(true);
+      socket.disconnect(true);
+    }else{
+      loggedInUsers[username] = socket.id;
+    }
+  }
+
   io.clients(function(error, clients){
     if (error) throw error;
     log.info("There are " + clients.length + " players connected");
+  });
+
+  socket.on('disconnect',function(data){
+    loggedInUsers[username] = null;
   });
 });
 
