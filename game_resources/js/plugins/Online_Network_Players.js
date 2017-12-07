@@ -5,6 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
+// Version: 1.0.7 - Fixed bug with NastyTextPop not being there
 // Version: 1.0.6 - Added names above characters with Nasty_Text_Pop_Events.js
 //=============================================================================
 
@@ -181,6 +182,7 @@ Game_Player.prototype.moveByInput = function() {
 var NetPlayer_GmePlayer_refresh_alias = Game_Player.prototype.refresh;
 Game_Player.prototype.refresh = function() {
   NetPlayer_GmePlayer_refresh_alias.call(this);
+  if(this.namepop===undefined) return;
   if (showPlayersName==='false') return;
     if (NetPlayerNameType===1) {
       this.namepop = $gameParty.leader()._name;
@@ -304,13 +306,12 @@ Game_NetworkPlayer.prototype.constructor = Game_NetworkPlayer;
 
 Game_NetworkPlayer.prototype.initialize = function(mapId,eventId,x,y, name) {
 	Game_Event.prototype.initialize.call(this,mapId,eventId);
-  if (this.namepop===undefined){
-    console.log("You need Nasty_Text_Pop_Events for names to show!");
-  }
-  this.namepop = name;
   this._isNetworkPlayer = true;
   this.setPosition(x,y);
-  if (this.namepop){
+  if (this.namepop===undefined){
+    console.log("You need Nasty_Text_Pop_Events for names to show!");
+  }else{
+    this.namepop = name;
     this.setTextOptions(netplayerTextOptions);
   }
 };
