@@ -1,15 +1,10 @@
-/*
-* @Author: Vinxce
-* @Date:   2015-10-26 20:14:36
-* @Last Modified by:   Vinxce
-* @Last Modified time: 2015-10-28 10:16:05
-*/
+//Version 0.1.0 - Added fields for password reset logic
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
-var allFields = 'id salt hash username email activated actCode rank socketId';
+var allFields = 'id salt hash username email activated actCode rank socketId lostPasswordFlag lostPasswordTemp lostPasswordExpires';
 
 var Account = new Schema({
     username: {type: String, required: true, index: { unique: true}},
@@ -17,6 +12,9 @@ var Account = new Schema({
     activated: Boolean,
     actCode: String,
     socketId: String, //Current assigned socket
+    lostPasswordFlag: Boolean,
+    lostPasswordTemp: String,
+    lostPasswordExpires: Date,
     rank: Number //0 - player, 1 - moderator, 2 - admin
 });
 
