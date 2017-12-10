@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var express = require('express');
 var config = require('../configurations/config');
+var log = require('tracer').colorConsole(config.loggingConfig);
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport(config.mailFrom);
 var Account = require('./LoginSchema/Account');
@@ -106,6 +107,24 @@ router.post('/login', function(req, res){
       rank: account.rank
     };
 
+    //Check for lost password flag and temp password
+     if (account.lostPasswordFlag===true){
+      var tempPasswordHash = crypto.createHash('sha1').update(account.lostPasswordTemp + config.firstHash).digest('hex');
+      if (tempPasswordHash===req.body.password){
+        //Check lostPasswordExpires
+        if (Date.now() > account.lostPasswordExpires){
+          return res.status(203).json({
+            err: "Temporary Password is Expired!"
+          });
+        }
+        return res.status(200).json({
+          temp:tempPasswordHash,
+          name:account.username
+         });
+        }
+       }
+
+    //Check for normal password
     crypto.pbkdf2(req.body.password, account.salt, 25000, 512, 'sha256', function(err, hashRaw){
       var hpass = new Buffer(hashRaw, 'binary').toString('hex');
       if (account.hash == hpass) {
@@ -145,6 +164,93 @@ router.get('/activate/:actCode', function(req, res) {
         }
         return res.status(200).json('activation');
     });
+});
+
+router.post('/lostpassword', function(req, res){
+  var randomPass=crypto.randomBytes(config.lostPasswordComplexity).toString('hex');
+  Account.findOneAndUpdate({email:req.body.email},
+    {lostPasswordFlag:true,lostPasswordTemp:randomPass,lostPasswordExpires:Date.now() + config.tempPasswordExpires},
+    function(err, account){
+    if (!account.activated){
+      return res.status(203).json({
+      err: "Account Not Activated"
+      });
+    }
+    if (err) {
+      return res.status(203).json({
+        err: err.msg
+      });
+    }
+    if (!account) {
+      return res.status(203).json({
+        err: "Email not found"
+      });
+    }
+
+    // Send Email with random temporary password
+    transporter.sendMail({
+        from: 'Team <no-reply@myserver.com>',
+        to: account.email,
+        subject: "RPGMaker MV MMO",
+        text: "Hello "+account.username+' \nyour temporary account password is: '+randomPass,
+        html: "Hello "+account.username+' \nyour temporary account password is: '+randomPass,
+    },function(err,info){
+      if (err){
+        log.error(err);
+      }else{
+        log.info(info);
+      }
+    });
+    return res.status(200).json({});
+  });
+});
+
+router.post('/resetpassword', function(req, res){
+  Account.findByName(req.body.tempName, function(err,account){
+    if (err){
+      return res.status(203).json({
+        err: err.msg
+        });
+    }
+    if (!account) {
+      return res.status(203).json({
+        err: "Error Occured (Account Not Found)"
+      });
+    }
+    if (!account.lostPasswordFlag){
+      return res.status(203).json({
+        err: "Please go through the password reset process the normal way...."
+      });
+    }
+
+    var tempPasswordHash = crypto.createHash('sha1').update(account.lostPasswordTemp + config.firstHash).digest('hex');
+    if (req.body.tempHash!==tempPasswordHash){
+      return res.status(203).json({
+        err: "Please go through the password reset process the normal way...."
+      });
+    }
+
+    if (Date.now() > account.lostPasswordExpires){
+      return res.status(203).json({
+        err: "Temporary Password is Expired!"
+      });
+    }
+
+    account.setPassword(req.body.password, function(err,data){
+      if (err){
+        return res.status(203).json({
+          err: err.message
+        });
+      }
+      if (data){
+        account.lostPasswordFlag = false;
+        account.save().then(function(error,data){
+          if (err) log.error(err);
+          return res.status(200).json({});
+        });
+      }
+    });
+  });
 });
 
 module.exports = router;

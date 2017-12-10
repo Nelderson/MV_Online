@@ -36,6 +36,12 @@ var Config = module.exports = {
   //Allows only one logged in user at a time.
   enforceOneUser: false,
 
+  //Temporary Password Complexity for lost Passwords
+  lostPasswordComplexity: 2,
+
+  //Temporary Password Expiration in Milliseconds
+  tempPasswordExpires: 3600000, //1 hour
+
   //------------------------
   //Database Configurations
   //------------------------

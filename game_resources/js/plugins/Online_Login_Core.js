@@ -5,6 +5,7 @@ Imported.Online_Login_Core = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
+// Version: 1.1.5 - Added Password Reset Logic
 // Version: 1.1.4 - Added event switches for when users login multiple times
 // Version: 1.1.3
 //=============================================================================
@@ -65,11 +66,11 @@ var Nasty = Nasty || {};
         }
       };
 
-	//-----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	// MMO_Scene_Title
 	//
 	// Title scene including login form.
-	//
+  //----------------------------------------------------------------------------
 
 	function MMO_Scene_Title() {
 	    this.initialize.apply(this, arguments);
@@ -166,6 +167,7 @@ var Nasty = Nasty || {};
 					'</div><br>'+
 					'<button id="btnConnect" class="btn btn-primary">Connect</button>'+
 					'<button id="btnRegister" class="btn btn-default">Register</button>'+
+          '<button id="btnForgotPassword" class="btn btn-link btn-sm">Forgot Password?</button>'+
 				'</div>'+
 			'</div>');
 
@@ -180,6 +182,7 @@ var Nasty = Nasty || {};
     $("#inputPassword").tap(function(){$("#inputPassword").focus();});
 		$("#btnConnect").bind("click touchstart",function(){that.connectAttempt();});
 		$("#btnRegister").bind("click touchstart",function(){that.createRegistrationForm();});
+    $("#btnForgotPassword").bind("click touchstart",function(){that.createLostPasswordForm();});
     $("#inputUsername").focus();
 	};
 
@@ -213,6 +216,107 @@ var Nasty = Nasty || {};
 		$("#loginErrBox").html('<div class="alert alert-info fade in">'+msg+'</div>');
 	};
 
+  MMO_Scene_Title.prototype.displaySuccess = function(msg) {
+		$("#loginErrBox").html('<div class="alert alert-success fade in">'+msg+'</div>');
+	};
+
+  MMO_Scene_Title.prototype.createLostPasswordForm = function() {
+		$("#ErrorPrinter").html(
+			'<div id="LostPasswordFrom" class="panel panel-primary" style="width:'+(Graphics.boxWidth - (Graphics.boxWidth / 3))+'px">'+
+				'<div class="panel-heading">Lost Password - Enter Email</div>'+
+				'<div class="panel-body">'+
+					'<div id="loginErrBox"></div>'+
+  					'<div class="form-group">'+
+    			'<input type="text" name="email" id="inputEmailLP"  placeholder="Email Address" class="form-control"/>'+
+  				'</div>'+
+  					'<button id="btnSubmitLP"type="submit" class="btn btn-primary">Submit</button>'+
+						'<button id ="btnCancelLP" type="button" class="btn btn-default">Cancel</button>'+
+				'</div>'+
+			'</div>');
+
+			var that = this;
+			$(".form-control").keypress(function(e){
+				if (e.which == 13) { //enter
+					that.lostPasswordRequest();
+				}
+			});
+      $("#inputEmailLP").tap(function(){$("#inputEmailLP").focus();});
+      $("#btnSubmitLP").bind("click touchstart",function(){that.lostPasswordRequest();});
+      $("#btnCancelLP").bind("click touchstart",function(){that.createLoginForm();});
+      $("#inputEmailLP").focus();
+		};
+
+    MMO_Scene_Title.prototype.createResetPasswordForm = function() {
+  		$("#ErrorPrinter").html(
+  			'<div id="PasswordResetForm" class="panel panel-primary" style="width:'+(Graphics.boxWidth - (Graphics.boxWidth / 3))+'px">'+
+  				'<div class="panel-heading">Password Reset</div>'+
+  				'<div class="panel-body">'+
+  					'<div id="loginErrBox"></div>'+
+    					'<div class="form-group">'+
+      			'<input type="password" name="password" id="inputPasswordCP"  placeholder="New Password" class="form-control"/>'+
+    				'</div>'+
+            '<div class="form-group">'+
+          '<input type="password" name="password" id="inputPasswordConfirmCP"  placeholder="Confirm Password" class="form-control"/>'+
+          '</div>'+
+    					'<button id="btnChangeCP"type="submit" class="btn btn-primary">Change</button>'+
+  						'<button id ="btnCancelCP" type="button" class="btn btn-default">Cancel</button>'+
+  				'</div>'+
+  			'</div>');
+
+  			var that = this;
+  			$(".form-control").keypress(function(e){
+  				if (e.which == 13) { //enter
+  					that.changePasswordRequest();
+  				}
+  			});
+        $("#inputPasswordCP").tap(function(){$("#inputEmailLP").focus();});
+        $("#inputPasswordConfirmCP").tap(function(){$("#inputEmailLP").focus();});
+        $("#btnChangeCP").bind("click touchstart",function(){that.changePasswordRequest();});
+        $("#btnCancelCP").bind("click touchstart",function(){that.createLoginForm();});
+        $("#inputPasswordCP").focus();
+  		};
+
+      MMO_Scene_Title.prototype.changePasswordRequest = function(){
+    		var that = this;
+        var pass1 = $("#inputPasswordCP").val();
+        var pass2 = $("#inputPasswordConfirmCP").val();
+        if (pass1.length === 0)
+    			return this.displayError("You must provide a new password!");
+        if (pass2.length === 0)
+      		return this.displayError("You must confirm your password!");
+        if (pass1!==pass2)
+          return this.displayError("Passwords do not match!");
+        this.displayInfo('Connecting <i class="fa fa-spin fa-spinner"></i>');
+
+        shapwd = CryptoJS.SHA1(pass1+$gameNetwork._firstHash).toString(CryptoJS.enc.Hex);
+
+        $.post($gameNetwork._serverURL+'/resetpassword', {
+            password: shapwd,
+            tempHash: $gameSystem._tempPasswordHash,
+            tempName: $gameSystem._tempPasswordName
+          }).done(function (data) {
+            if (data.err) return that.displayError("Error : "+data.err);
+            that.createLoginForm();
+            that.displaySuccess("Password Changed Successfully");
+          });
+      };
+
+    MMO_Scene_Title.prototype.lostPasswordRequest = function(){
+  		var that = this;
+  		var email = $("#inputEmailLP").val();
+      if (email.length === 0)
+  			return this.displayError("You must provide a username!");
+      this.displayInfo('Connecting <i class="fa fa-spin fa-spinner"></i>');
+
+      $.post($gameNetwork._serverURL+'/lostpassword', {
+        email: email,
+      }).done(function (data) {
+        if (data.err) return that.displayError("Error : "+data.err);
+        that.createLoginForm();
+        that.displayInfo("Check email for temporary password");
+      });
+    };
+
 	MMO_Scene_Title.prototype.connectAttempt = function(){
 		var that = this;
 		var username = $("#inputUsername").val();
@@ -231,6 +335,12 @@ var Nasty = Nasty || {};
       }).done(function (data) {
 				if (data.err)
 						return that.displayError("Error : "+data.err);
+        if (data.temp){
+          //Make Password reset form
+          $gameSystem._tempPasswordName = data.name;
+          $gameSystem._tempPasswordHash = data.temp;
+          that.createResetPasswordForm();
+        }
 					if (data.token) {
 						$gameNetwork._token = data.token;
 						var ioFlag = String(Nasty.Parameters['socket.io connection']);
@@ -328,10 +438,7 @@ var Nasty = Nasty || {};
 	    AudioManager.stopMe();
 	};
 
-
-
-
-    //-----------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 	//
 	// Override of Scene_Boot.start, for calling our own Scene_Title!
 	//
@@ -360,9 +467,6 @@ var Nel__SceneBase_Boot_alias_MMO_Login = Scene_Boot.prototype.start;
 	    this.updateDocumentTitle();
 		}
 	};
-
-
-
 
     //-----------------------------------------------------------------------------
 	//
