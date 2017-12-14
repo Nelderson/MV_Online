@@ -32,13 +32,6 @@ here install bind socket for online
 
 netplayers(io);
 
-
-
-
-
-
-
-
 Exemple config Server.js
 ==========================
 ```
@@ -127,8 +120,3 @@ exampleSocket(io);
 
 netplayers(io);
 ```
-
-
-
-
-
