@@ -1,5 +1,6 @@
 //=============================================================================
 // Nasty Text Pop Over Event
+// Version: 1.2.1 - Added default offset x and y positioning in options
 // Version: 1.2.0
 //=============================================================================
 var Imported = Imported || {};
@@ -40,6 +41,14 @@ var Nasty = Nasty || {};
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
  *
+ * @param Offset_X 1
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 1
+ * @desc Default offset y for text.
+ * @default 0
+ *
  *@param =============
  *
  * @param Font Size 2
@@ -69,6 +78,14 @@ var Nasty = Nasty || {};
  * @param Time 2
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
+ *
+ * @param Offset_X 2
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 2
+ * @desc Default offset y for text.
+ * @default 0
  *
  *@param =============
  *
@@ -100,6 +117,14 @@ var Nasty = Nasty || {};
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
  *
+ * @param Offset_X 3
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 3
+ * @desc Default offset y for text.
+ * @default 0
+ *
  *@param =============
  *
  * @param Font Size 4
@@ -129,6 +154,14 @@ var Nasty = Nasty || {};
  * @param Time 4
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
+ *
+ * @param Offset_X 4
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 4
+ * @desc Default offset y for text.
+ * @default 0
  *
  *@param =============
  *
@@ -160,6 +193,14 @@ var Nasty = Nasty || {};
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
  *
+ * @param Offset_X 5
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 5
+ * @desc Default offset y for text.
+ * @default 0
+ *
  *@param =============
  *
  * @param Font Size 6
@@ -189,6 +230,14 @@ var Nasty = Nasty || {};
  * @param Time 6
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
+ *
+ * @param Offset_X 6
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 6
+ * @desc Default offset y for text.
+ * @default 0
  *
  *@param =============
  *
@@ -220,6 +269,14 @@ var Nasty = Nasty || {};
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
  *
+ * @param Offset_X 7
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 7
+ * @desc Default offset y for text.
+ * @default 0
+ *
  *@param =============
  *
  * @param Font Size 8
@@ -249,6 +306,14 @@ var Nasty = Nasty || {};
  * @param Time 8
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
+ *
+ * @param Offset_X 8
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 8
+ * @desc Default offset y for text.
+ * @default 0
  *
  *@param =============
  *
@@ -280,6 +345,14 @@ var Nasty = Nasty || {};
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
  *
+ * @param Offset_X 9
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 9
+ * @desc Default offset y for text.
+ * @default 0
+ *
  *@param =============
  *
  * @param Font Size 10
@@ -309,6 +382,14 @@ var Nasty = Nasty || {};
  * @param Time 10
  * @desc Time before text disappers.  Set to 0 for eternal.
  * @default 120
+ *
+ * @param Offset_X 10
+ * @desc Default offset x for text.
+ * @default 0
+ *
+ * @param Offset_Y 10
+ * @desc Default offset y for text.
+ * @default 0
  *
  *@param =============
  *
@@ -387,7 +468,7 @@ var Nasty = Nasty || {};
  *
  *  outlineWidth: Number - Outline width
  *
- * italic: true/false - Italic font?
+ *  italic: true/false - Italic font?
  *
  *  width: Number - Offset of Window width
  *
@@ -436,6 +517,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 1']),
   namepop_ital: String(Nasty.Parameters['Font italic? 1']),
   namepop_time: Number(Nasty.Parameters['Time 1']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 1']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 1'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 2']),
@@ -445,6 +528,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 2']),
   namepop_ital: String(Nasty.Parameters['Font italic? 2']),
   namepop_time: Number(Nasty.Parameters['Time 2']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 2']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 2'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 3']),
@@ -454,6 +539,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 3']),
   namepop_ital: String(Nasty.Parameters['Font italic? 3']),
   namepop_time: Number(Nasty.Parameters['Time 3']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 3']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 3'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 4']),
@@ -463,6 +550,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 4']),
   namepop_ital: String(Nasty.Parameters['Font italic? 4']),
   namepop_time: Number(Nasty.Parameters['Time 4']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 4']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 4'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 5']),
@@ -472,6 +561,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 5']),
   namepop_ital: String(Nasty.Parameters['Font italic? 5']),
   namepop_time: Number(Nasty.Parameters['Time 5']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 5']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 5'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 6']),
@@ -481,6 +572,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 6']),
   namepop_ital: String(Nasty.Parameters['Font italic? 6']),
   namepop_time: Number(Nasty.Parameters['Time 6']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 6']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 6'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 7']),
@@ -490,6 +583,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 7']),
   namepop_ital: String(Nasty.Parameters['Font italic? 7']),
   namepop_time: Number(Nasty.Parameters['Time 7']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 7']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 7'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 8']),
@@ -499,6 +594,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 8']),
   namepop_ital: String(Nasty.Parameters['Font italic? 8']),
   namepop_time: Number(Nasty.Parameters['Time 8']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 8']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 8'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 9']),
@@ -508,6 +605,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 9']),
   namepop_ital: String(Nasty.Parameters['Font italic? 9']),
   namepop_time: Number(Nasty.Parameters['Time 9']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 9']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 9'])
 });
 Nasty.Param.TextPop.push({
   namepop_size: Number(Nasty.Parameters['Font Size 10']),
@@ -517,6 +616,8 @@ Nasty.Param.TextPop.push({
   namepop_font: String(Nasty.Parameters['Font Name 10']),
   namepop_ital: String(Nasty.Parameters['Font italic? 10']),
   namepop_time: Number(Nasty.Parameters['Time 10']),
+  namepop_offsetx: Number(Nasty.Parameters['Offset_X 10']),
+  namepop_offsety: Number(Nasty.Parameters['Offset_Y 10'])
 });
 
 
@@ -548,6 +649,8 @@ Game_Character.prototype.setTextOptions = function(textOption) {
    this.namepop_time = text.namepop_time;
    this.namepop_font = text.namepop_font;
    this.namepop_ital = text.namepop_ital;
+   this.namepop_ox = text.namepop_offsetx;
+   this.namepop_oy = text.namepop_offsety;
    this.textpop_flag = true;
 };
 
