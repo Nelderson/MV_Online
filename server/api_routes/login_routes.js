@@ -133,7 +133,7 @@ router.post('/login', function(req, res){
           err: "Account Not Activated"
           });
         }
-          var token = jwt.sign(profile, config.jwtSecret, { expiresIn: 60*5 });
+          var token = jwt.sign(profile, config.jwtSecret, { expiresIn: 60*config.tokenExpiresIn});
           return res.status(200).json({token: token});
       }
       return res.status(203).json({
