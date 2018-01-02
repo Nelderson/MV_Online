@@ -5,6 +5,7 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
+// Version: 1.0.5 - Allows for chat to be retained on map transfer/menu/battle
 // Version: 1.0.4 - Add function to enable/disable chat and chat by leader name
 //=============================================================================
 
@@ -29,6 +30,10 @@ var Nasty = Nasty || {};
  * @param Room Name by Map
  * @desc Change the room name by map that you are on?
  * @default false
+ *
+ * @param Recall Message Limit
+ * @desc Recalls this many messages when switching maps/battles/etc
+ * @default 20
  *
  * @param Chat Username Color
  * @desc Color of usernames in chat window
@@ -127,6 +132,7 @@ var Nasty = Nasty || {};
  */
  //=============================================================================
  var socket = null;
+ var chatHistory = [];
  Nasty.Parameters = $plugins.filter(function(p)
 	 { return p.description.contains('<Online_Chat>');})[0].parameters;
 
@@ -156,6 +162,7 @@ var Nasty = Nasty || {};
   var chatTextColor = Nasty.Parameters['Chat Text Color'];
   var roomMapNameFlag = Nasty.Parameters['Room Name by Map'];
   var NetPlayerChatNameType = Number(Nasty.Parameters['Chat with Username or Character Name']);
+  var recallMessageLimit = Number(Nasty.Parameters['Recall Message Limit']);
 
   var networkName = '';
 
@@ -172,6 +179,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 	});
 
   socket.on('messageServer', function(data){
+    var chat = document.getElementById('txtarea');
     var message = document.createElement('div');
     var user = document.createElement('span');
     var chatText = document.createElement('span');
@@ -182,8 +190,8 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
     chatText.textContent = data.message;
     message.appendChild(user);
     message.appendChild(chatText);
+    chatHistory.push([user, chatText]);
     //Append to chat text div
-    var chat = document.getElementById('txtarea');
     chat.appendChild(message);
     chat.scrollTop = chat.scrollHeight;
   });
@@ -197,6 +205,19 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
   Scene_Map.prototype.createDisplayObjects = function() {
     OnlineChat_createDisplayObj_Scene_Map.call(this);
     this.createChatDOMElements();
+    this.appendChatHistory();
+  };
+
+  Scene_Map.prototype.appendChatHistory = function(){
+  var diff = chatHistory.length - recallMessageLimit;
+  if (diff>0) chatHistory.splice(0,diff);
+  var chat = document.getElementById('txtarea');
+    for (var i=0;i<chatHistory.length;i++){
+      var message = document.createElement('div');
+      message.appendChild(chatHistory[i][0]);
+      message.appendChild(chatHistory[i][1]);
+      chat.appendChild(message);
+    }
   };
 
    Scene_Map.prototype.createChatDOMElements = function(){
