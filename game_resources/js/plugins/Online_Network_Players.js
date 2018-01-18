@@ -5,6 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
+// Version: 1.0.9 - Added check to stop Game_Player refresh when null
 // Version: 1.0.8 - Fixed bug for remove player when not on map
 // Version: 1.0.7 - Fixed bug with NastyTextPop not being there
 // Version: 1.0.6 - Added names above characters with Nasty_Text_Pop_Events.js
@@ -197,13 +198,13 @@ Game_Player.prototype.refresh = function() {
 var NetPlayer_SceneBase_popScene = Scene_Base.prototype.popScene;
 Scene_Base.prototype.popScene = function() {
     NetPlayer_SceneBase_popScene.call(this);
-    $gamePlayer.refresh();
+    if ($gamePlayer) $gamePlayer.refresh();
 };
 
 var NetPlayer_SceneBase_stop = Scene_Base.prototype.stop;
 Scene_Base.prototype.stop = function() {
     NetPlayer_SceneBase_stop.call(this);
-    $gamePlayer.refresh();
+    if ($gamePlayer) $gamePlayer.refresh();
 };
 
 //==============================//
