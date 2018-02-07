@@ -5,6 +5,7 @@ Imported.Online_Network_Players = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Network Players
+// Version: 1.0.10 - Fixed bug when in battle sprites clearing on map.
 // Version: 1.0.9 - Added check to stop Game_Player refresh when null
 // Version: 1.0.8 - Fixed bug for remove player when not on map
 // Version: 1.0.7 - Fixed bug with NastyTextPop not being there
@@ -94,7 +95,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 	});
 
 	socket.on('NetworkPlayersXY', function(data){
-    if(!SceneManager._scene._spriteset) return;
+    if(!SceneManager._scene._spriteset || SceneManager._scene instanceof Scene_Battle) return;
 		var player = data.playerid;
     var name = data.name;
 		var cx = data.x;
@@ -134,7 +135,7 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
 	 });
 
 	 socket.on('removePlayer', function(data){
-     if(!SceneManager._scene._spriteset) return;
+     if(!SceneManager._scene._spriteset || SceneManager._scene instanceof Scene_Battle) return;
 		 var id = data.id;
 		 //Just in case player hasn't moved and disconnects
 		 if (!networkMapEvents[id]) return;
