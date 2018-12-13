@@ -6,9 +6,7 @@
 public
 
 #Configuration Folder
-server/configurations
-
-# Copied from node.gitignore on github
+server/configurations/config.js
 
 # Logs
 logs

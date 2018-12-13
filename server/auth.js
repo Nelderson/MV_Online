@@ -26,7 +26,7 @@ var config = require('./configurations/config');
 		// return an error
 		return res.status(403).send({
 			success: false,
-			message: 'No token provided.'
+			message: 'Not Authenticated'
 		});
 
 	}

@@ -26,9 +26,8 @@ var anonymous = true;
 var Metrics = mongoose.model('Metrics', Metric);
 
 if (!anonymous){
-  router.use(function(req,res,next){
-    authAPI(req,res,next);
-  });
+  //Need to have a valid token for all routes
+  router.use(authAPI);
 }
 
 router.post('/datadump', function(req, res) {

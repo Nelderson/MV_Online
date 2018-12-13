@@ -14,9 +14,8 @@ var Save = new mongoose.Schema({
 
 var Saves = mongoose.model('Saves', Save);
 
-router.use(function(req,res,next){
-  authAPI(req,res,next); //Need to have a valid token for all routes
-});
+//Need to have a valid token for all routes
+router.use(authAPI);
 
 router.get('/loadfromcloud', function(req, res){
   var name = req.decoded.name;
