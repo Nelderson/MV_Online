@@ -13,6 +13,7 @@ var logger = require('morgan'); //For development
 var socketioJwt = require('socketio-jwt');
 var log = require('tracer').colorConsole(config.loggingConfig);
 var loggedInUsers = {};
+var auth = require('./auth.js');
 
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
@@ -36,16 +37,13 @@ app.use('/static', express.static('public'));
 //----------------------------------
 // ADD SOCKET IO MODULES HERE:
 //----------------------------------
-var exampleSocket = require('./socket_modules/exampleSocket');
+// var exampleSocket = require('./socket_modules/exampleSocket');
 
 //Pre Socket Processes Here (Mostly for Database connections)
 var loginDBConnection = require('./api_routes/loginDBConnection')();
 
 //Authorize socket connection with token from login
-io.set('authorization', socketioJwt.authorize({
-  secret: config.jwtSecret,
-  handshake: true
-}));
+io.use(auth.authSocket)
 
 //When first connected to Socket.io
 io.on('connection', function(socket){
@@ -75,4 +73,4 @@ io.on('connection', function(socket){
 //----------------------------------
 // BIND SOCKET IO MODULES HERE:
 //----------------------------------
-exampleSocket(io);
+// exampleSocket(io);

@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var config = require('./configurations/config');
 
-module.exports = function(req, res, next){
+ var authAPI = function(req, res, next){
 
 	// check header or url parameters or post parameters for token
 	var token = req.body.token || req.param('token') || req.headers['x-access-token'];
@@ -31,3 +31,32 @@ module.exports = function(req, res, next){
 
 	}
 };
+
+ var authSocket = function(socket, next){
+	var { token } = socket.handshake.query;
+
+	// decode token
+	if (token) {
+
+		// verifies secret and checks exp
+		jwt.verify(token, config.jwtSecret, function(err, decoded) {
+			if (err) {
+				return next(err);
+			} else {
+				// set user to decoded token 
+				// for use throughout app
+				socket.user = decoded;
+				next();
+			}
+		});
+
+	} else {
+		// if there is no token
+		// return an error
+		return next('Not Authenticated')
+	}
+};
+
+
+module.exports.authAPI = authAPI;
+module.exports.authSocket = authSocket;

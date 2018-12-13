@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var express = require('express');
-var authAPI = require('../authenticateAPI.js');
+var authAPI = require('../auth.js').authAPI;
 var router = express.Router();
 var config = require('../configurations/config');
 var log = require('tracer').colorConsole(config.loggingConfig);
