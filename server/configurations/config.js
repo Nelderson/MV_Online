@@ -28,13 +28,13 @@ var Config = module.exports = {
   firstHash: 'd28cb767c4272d8ab91000283c67747cb2ef7cd1',
 
   //Mail to send activation codes from
-  mailFrom: 'smtps://username@gmail.com:password@smtp.gmail.com',
+  mailFrom: process.env.MV_MAILFROM || 'smtps://username@gmail.com:password@smtp.gmail.com',
 
   //Activation API Location
   actUrl: 'http://localhost:8000/activate/',
 
   //Time until token expires (in minutes)
-  tokenExpiresIn: 5,
+  tokenExpiresIn: 60 * 24 * 14,
 
   //Allows only one logged in user at a time.
   enforceOneUser: false,
@@ -49,5 +49,5 @@ var Config = module.exports = {
   //Database Configurations
   //------------------------
 
-  mongoDBconnect: 'mongodb://username:password@linktomongodb.com:39504/collection'
+  mongoDBconnect: process.env.MV_MONGO || 'mongodb://username:password@linktomongodb.com:39504/collection'
 };

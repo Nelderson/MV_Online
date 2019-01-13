@@ -5,13 +5,15 @@ var chatConfig = require('./../configurations/chat');
 var config = require('./../configurations/config');
 var log = require('tracer').colorConsole(config.loggingConfig);
 var swearjar = require('swearjar');
+var auth = require('../auth.js');
 
 module.exports = function (sio) {
 	var io = sio.of('/chat');
+	io.use(auth.authSocket)
 
 	io.on('connection', function(socket) {
 		//Decoded Token
-		var token = socket.client.request.decoded_token;
+		var token = socket.user;
 		var username = token.name;
 
 		socket.emit('MyID', {name: username});

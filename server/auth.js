@@ -46,7 +46,7 @@ var config = require('./configurations/config');
 				// set user to decoded token 
 				// for use throughout app
 				socket.user = decoded;
-				next();
+				next(null);
 			}
 		});
 
