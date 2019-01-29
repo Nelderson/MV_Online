@@ -22,6 +22,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
     "redis": "^2.8.0",
+    "socketio-jwt": "^4.5.0",
     "socket.io": "2.2.0",
     "swearjar": "^0.2.0",
     "tracer": "^0.9.8"
