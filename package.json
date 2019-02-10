@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node": "8.11.1"
+    "node": "10.x"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -23,6 +23,8 @@
     "passport-local-mongoose": "^5.0.1",
     "redis": "^2.8.0",
     "socket.io": "2.2.0",
+    "socket.io-redis": "5.2.0",
+    "sticky-session": "1.1.2",
     "swearjar": "^0.2.0",
     "tracer": "^0.9.8"
   },

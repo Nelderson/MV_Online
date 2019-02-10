@@ -20,6 +20,11 @@ var Config = module.exports = {
     level: 'debug'
   },
 
+  redisConnection: {
+    host: 'localhost', 
+    port: 6379
+  },
+
   //---------------------
   //Login Configurations
   //---------------------
