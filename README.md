@@ -9,6 +9,7 @@ Installation
 -------------
 
 Deploy to Heroku here:
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/Nelderson/MV_Online/tree/master)
 
 Use `git clone` or download and unzip to the directory of your choice.
