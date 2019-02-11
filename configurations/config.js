@@ -55,5 +55,5 @@ var Config = module.exports = {
   //Database Configurations
   //------------------------
 
-  mongoDBconnect: process.env.MV_MONGO || 'mongodb://username:password@linktomongodb.com:39504/collection'
+  mongoDBconnect: process.env.MV_MONGO_URI || 'mongodb://username:password@linktomongodb.com:39504/collection'
 };

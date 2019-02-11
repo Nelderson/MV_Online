@@ -20,7 +20,7 @@ require('./api_routes/loginDBConnection')();
 var auth = require('./auth.js');
 
 const redisAdapter = require('socket.io-redis');
-io.adapter(redisAdapter(process.env.MV_REDIS_HOST));
+io.adapter(redisAdapter(process.env.MV_REDIS_HOST_URL));
 
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
