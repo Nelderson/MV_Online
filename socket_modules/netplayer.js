@@ -1,11 +1,15 @@
 // Version: 0.1.0 - Cleanup of initial Version
+var auth = require('../auth.js');
 
 module.exports = function (sio) {
 
   var io = sio.of('/netplayers');
 
+  io.use(auth.authSocket)
+
+
   io.on('connection', function(socket){
-    var token = socket.client.request.decoded_token;
+    var token = socket.user
     var username = token.name;
     var id = socket.id;
     var currentRoom = '0'; //Room names are based off Map ID
