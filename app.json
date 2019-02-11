@@ -3,5 +3,15 @@
   "description": "MV Online system created by Nelderson",
   "repository": "https://github.com/Nelderson/MV_Online",
   "logo": "https://node-js-sample.herokuapp.com/node.png",
-  "keywords": ["node", "express", "static"]
+  "keywords": ["node", "express", "static"],
+  "addons": [
+    {
+      "plan": "mongolab:sandbox",
+      "as": "MV_MONGO"
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "MV_REDIS_HOST"
+    }
+  ]
 }
