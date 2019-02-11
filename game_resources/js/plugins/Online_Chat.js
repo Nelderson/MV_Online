@@ -5,6 +5,7 @@ Imported.Online_Chat = true;
 var Nasty = Nasty || {};
 //=============================================================================
 // Online Chat
+// Version: 1.0.6 - Fix for crashing while in menu
 // Version: 1.0.5 - Allows for chat to be retained on map transfer/menu/battle
 // Version: 1.0.4 - Add function to enable/disable chat and chat by leader name
 //=============================================================================
@@ -188,12 +189,16 @@ Game_Network.prototype.connectSocketsAfterLogin = function(){
     chatText.style.color = chatTextColor;
     user.textContent = data.id+ ': ';
     chatText.textContent = data.message;
-    message.appendChild(user);
-    message.appendChild(chatText);
+    if (message){
+      message.appendChild(user);
+      message.appendChild(chatText);
+    }
     chatHistory.push([user, chatText]);
     //Append to chat text div
-    chat.appendChild(message);
-    chat.scrollTop = chat.scrollHeight;
+    if (chat) {
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+    }
   });
 };
 

@@ -26,8 +26,13 @@ app.use(logger('dev'));//For development
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.use(function(req,res,next){
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 
-if (!sticky.listen(server, process.env.PORT || config.port)) {
+
+if (!sticky.listen(server, process.env.PORT || config.port, {workers: 4})) {
   // Master code
   server.once('listening', function() {
     log.info('Master Server started on 8000 port');
@@ -35,6 +40,7 @@ if (!sticky.listen(server, process.env.PORT || config.port)) {
 } 
 else {
   // Worker code
+  
 
   log.info('Worker is on bruh and running on port: '+ config.port);
 
@@ -44,6 +50,7 @@ else {
 
   // No Authentication required:
   app.use('/',require('./api_routes/login_routes'));
+  app.use('/metrics',require('./api_routes/metrics'));
 
   // Authentication required:
   app.use('/example',require('./api_routes/example.js'));
@@ -54,6 +61,9 @@ else {
   // ADD SOCKET IO MODULES HERE:
   //----------------------------------
   // var exampleSocket = require('./socket_modules/exampleSocket');
+  var netplayers = require('./socket_modules/netplayer');
+  var chat = require('./socket_modules/chat');
+  var globalvar = require('./socket_modules/globalvar');
 
   //Authorize socket connection with token from login
   io.use(auth.authSocket)
@@ -62,7 +72,7 @@ else {
   io.on('connection', function(socket){
 
     if(config.enforceOneUser){
-      var username = socket.client.request.decoded_token.name;
+      var username = socket.user.name;
       if (loggedInUsers[username]){
         socket.to(loggedInUsers[username]).emit('firstShutDown',{});
         socket.emit('secondShutDown',{});
@@ -88,6 +98,8 @@ else {
   // BIND SOCKET IO MODULES HERE:
   //----------------------------------
   // exampleSocket(io);
-
+  netplayers(io);
+  chat(io);
+  globalvar(io);
 
 } // <---Don't delete

@@ -8,7 +8,7 @@ var log = require('tracer').colorConsole(config.loggingConfig);
 
 //============Config Section=============//
 //Set this the same as client anonymous flag
-var anonymous = true;
+var anonymous = false;
 //======================================//
 
  if (!anonymous){
@@ -31,9 +31,9 @@ if (!anonymous){
 }
 
 router.post('/datadump', function(req, res) {
-  var name, email;
-  var id  = req.body.id;
+  var name, email, id;
   if (!anonymous){
+    id  = req.body.id;
     name = req.decoded.name;
     email = req.decoded.email;
   }
