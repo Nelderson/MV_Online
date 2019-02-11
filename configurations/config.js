@@ -21,9 +21,7 @@ var Config = module.exports = {
   },
 
   redisConnection: {
-    host: process.env.MV_REDIS_HOST || 'localhost', 
-    port: process.env.MV_REDIS_PORT || 6379, 
-    password: process.env.MV_REDIS_PASSWORD || 'redisPasswordHere'
+    host: 'localhost', 
   },
 
   //---------------------
