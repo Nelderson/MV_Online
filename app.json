@@ -14,8 +14,7 @@
       "as": "MV_REDIS_HOST"
     },
     {
-      "plan": "sendgrid:starter",
-      "as": "MV_SENDGRID"
+      "plan": "sendgrid:starter"
     }
   ]
 }
