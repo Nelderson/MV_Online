@@ -8,13 +8,6 @@ var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
-var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-
-// var mailgunAPIKey = process.env.MAILGUN_API_KEY;
-// var mailgunDomain = process.env.MAILGUN_DOMAIN;
-// var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
-
-
 router.get('/', function (req, res) {
   res.status(203).json({});
 });
@@ -72,34 +65,16 @@ router.post('/register', function(req, res) {
               subject: "RPGMaker MV MMO",
               text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
             }
-            
-            var helper = require('sendgrid').mail;
-            var from_email = new helper.Email('Team <no-reply@myserver.com>');
-            var to_email = new helper.Email('test@example.com');
-            var subject = 'RPGMaker MV MMO';
-            var content = new helper.Content('text/plain', "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson');
-            var mail = new helper.Mail(from_email, subject, to_email, content);
-            var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-            var request = sg.emptyRequest({
-              method: 'POST',
-              path: '/v3/mail/send',
-              body: mail.toJSON(),
-            });
 
-            sg.API(request, function(error, response) {
-              console.log(response.statusCode);
-              console.log(response.body);
-              console.log(response.headers);
+            transporter.sendMail({
+                ...messageBody
+            },function(err,info){
+              if (err){
+                log.error(err);
+              }else{
+                log.info(info);
+              }
             });
-            // transporter.sendMail({
-            //     ...messageBody
-            // },function(err,info){
-            //   if (err){
-            //     log.error(err);
-            //   }else{
-            //     log.info(info);
-            //   }
-            // });
 
             return res.status(200).json({
                 pageData: {
