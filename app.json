@@ -14,7 +14,8 @@
       "as": "MV_REDIS_HOST"
     },
     {
-      "plan": "mailgun:starter"
+      "plan": "sendgrid:starter",
+      "as": "MV_SENDGRID"
     }
   ]
 }
