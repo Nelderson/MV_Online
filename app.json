@@ -12,6 +12,10 @@
     {
       "plan": "heroku-redis:hobby-dev",
       "as": "MV_REDIS_HOST"
+    },
+    {
+      "plan": "mailgun:starter",
+      "as": "MV_MAILGUN"
     }
   ]
 }
