@@ -14,8 +14,7 @@
       "as": "MV_REDIS_HOST"
     },
     {
-      "plan": "mailgun:starter",
-      "as": "MV_MAILGUN"
+      "plan": "mailgun:starter"
     }
   ]
 }
