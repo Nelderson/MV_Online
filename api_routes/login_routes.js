@@ -8,6 +8,10 @@ var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
+var mailgunAPIKey = process.env.MAILGUN_API_KEY;
+var mailgunDomain = process.env.MAILGUN_DOMAIN;
+var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
+
 
 router.get('/', function (req, res) {
   res.status(203).json({});
@@ -60,19 +64,26 @@ router.post('/register', function(req, res) {
 
             actUrl = config.actUrl+actCode;
 
-            transporter.sendMail({
-                from: 'Team <no-reply@myserver.com>',
-                to: req.body.email,
-                subject: "RPGMaker MV MMO",
-                text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson',
-                html: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!<br>Your account has been registrated, but you need to activate it by clicking on the following link : <br><a href="'+actUrl+'">'+actUrl+'</a><br>Enjoy!<br>-- Nelderson'
-            },function(err,info){
-              if (err){
-                log.error(err);
-              }else{
-                log.info(info);
-              }
-            });
+            const messageBody = {
+              from: 'Team <no-reply@myserver.com>',
+              to: req.body.email,
+              subject: "RPGMaker MV MMO",
+              text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
+            }
+
+            mailgun.messages().send(messageBody, (error, body) => {
+              console.log('Maybe???', body);
+            });            
+
+            // transporter.sendMail({
+            //     ...messageBody
+            // },function(err,info){
+            //   if (err){
+            //     log.error(err);
+            //   }else{
+            //     log.info(info);
+            //   }
+            // });
 
             return res.status(200).json({
                 pageData: {
