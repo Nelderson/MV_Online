@@ -8,8 +8,27 @@ var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
+var mailgunAPIKey = process.env.MAILGUN_API_KEY;
+var mailgunDomain = process.env.MAILGUN_DOMAIN;
+var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
+
 router.get('/', function (req, res) {
   res.status(203).json({});
+});
+
+router.get('/test-mailgun', function (req, res) {
+  const messageBody = {
+    from: 'Team <no-reply@myserver.com>',
+    to: 'neldersongaming@gmail.com',
+    subject: "RPGMaker MV MMO",
+    text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
+  }
+
+  mailgun.messages().send(messageBody, (error, body) => {
+    console.log('Maybe???', body);
+    res.status(203).json({});
+  });       
+  
 });
 
 router.get('/register', function(req, res) {
