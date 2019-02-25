@@ -27,7 +27,7 @@ router.get('/test-mailgun', function (req, res) {
 
   mailgun.messages().send(messageBody, (error, body) => {
     console.log('Maybe???', body);
-    console.log('REQUEST BASE URL??', req.headers);
+    console.log('REQUEST BASE URL??', req.headers.host);
     res.status(203).json({});
   });       
   
