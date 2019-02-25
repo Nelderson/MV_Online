@@ -17,7 +17,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/test-mailgun', function (req, res) {
-  const actUrl = config.actUrl;
+  const actUrl = `${req.headers.host}/activate`;
   const messageBody = {
     from: 'Team <no-reply@myserver.com>',
     to: 'neldersongaming@gmail.com',
@@ -27,7 +27,7 @@ router.get('/test-mailgun', function (req, res) {
 
   mailgun.messages().send(messageBody, (error, body) => {
     console.log('Maybe???', body);
-    console.log('REQUEST BASE URL??', req.baseUrl);
+    console.log('REQUEST BASE URL??', req.headers.host);
     res.status(203).json({});
   });       
   
