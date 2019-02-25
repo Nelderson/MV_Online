@@ -86,15 +86,19 @@ router.post('/register', function(req, res) {
               text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
             }
 
-            transporter.sendMail({
-                ...messageBody
-            },function(err,info){
-              if (err){
-                log.error(err);
-              }else{
-                log.info(info);
-              }
-            });
+            mailgun.messages().send(messageBody, (error, body) => {
+              console.log('Maybe???', body);
+            });   
+
+            // transporter.sendMail({
+            //     ...messageBody
+            // },function(err,info){
+            //   if (err){
+            //     log.error(err);
+            //   }else{
+            //     log.info(info);
+            //   }
+            // });
 
             return res.status(200).json({
                 pageData: {

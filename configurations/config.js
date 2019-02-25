@@ -35,7 +35,7 @@ var Config = module.exports = {
   mailFrom: process.env.MV_MAILFROM || 'smtps://username@gmail.com:password@smtp.gmail.com',
 
   //Activation API Location
-  actUrl: 'http://localhost:8000/activate/',
+  actUrl: `https://${process.env.HEROKU_APP_NAME}.herokuapp.com/activate` || 'http://localhost:8000/activate/',
 
   //Time until token expires (in minutes)
   tokenExpiresIn: 60 * 24 * 14,
