@@ -17,7 +17,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/test-mailgun', function (req, res) {
-  const actUrl = config.actUrl+actCode;
+  const actUrl = config.actUrl;
   const messageBody = {
     from: 'Team <no-reply@myserver.com>',
     to: 'neldersongaming@gmail.com',
