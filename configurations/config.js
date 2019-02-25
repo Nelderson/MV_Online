@@ -4,7 +4,7 @@ var Config = module.exports = {
   //---------------------
   port: 8000,
 
-  jwtSecret: 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
+  jwtSecret: process.env.MV_JWT_SECRET || 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
 
   loggingConfig: {
     format : [
@@ -29,7 +29,7 @@ var Config = module.exports = {
   //---------------------
 
   //Needs to be the same as Client firstHash
-  firstHash: 'd28cb767c4272d8ab91000283c67747cb2ef7cd1',
+  firstHash: process.env.MV_FIRST_HASH||'d28cb767c4272d8ab91000283c67747cb2ef7cd1',
 
   //Mail to send activation codes from
   mailFrom: process.env.MV_MAILFROM || 'smtps://username@gmail.com:password@smtp.gmail.com',
