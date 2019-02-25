@@ -34,9 +34,6 @@ Inside the  `server/configurations/config.js` file, there are several things to 
 `mailFrom` when a user registers they recieve an email from this address.
 `smtps://username@gmail.com:password@smtp.gmail.com`  (Additional steps are required if you want to use gmail.)
 
-`actUrl`  Activation URL base for activation codes (Default:` http://localhost:8000/activate/`
-
-
 `mongoDBconnect` Link and credentials to MongoDB Database. `mongodb://username:password@linktomongodb.com:39504/collection`
 
 
