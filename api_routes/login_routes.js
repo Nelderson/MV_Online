@@ -17,11 +17,12 @@ router.get('/', function (req, res) {
 });
 
 router.get('/test-mailgun', function (req, res) {
+  const actUrl = config.actUrl+actCode;
   const messageBody = {
     from: 'Team <no-reply@myserver.com>',
     to: 'neldersongaming@gmail.com',
     subject: "RPGMaker MV MMO",
-    text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
+    text: 'Hello, and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
   }
 
   mailgun.messages().send(messageBody, (error, body) => {
