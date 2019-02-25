@@ -10,27 +10,13 @@ var router = express.Router();
 
 var mailgunAPIKey = process.env.MAILGUN_API_KEY;
 var mailgunDomain = process.env.MAILGUN_DOMAIN;
-var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
+
+if (mailgunAPIKey && mailgunDomain){
+  var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
+}
 
 router.get('/', function (req, res) {
   res.status(203).json({});
-});
-
-router.get('/test-mailgun', function (req, res) {
-  const actUrl = `${req.headers.host}/activate`;
-  const messageBody = {
-    from: 'Team <no-reply@myserver.com>',
-    to: 'neldersongaming@gmail.com',
-    subject: "RPGMaker MV MMO",
-    text: 'Hello, and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
-  }
-
-  mailgun.messages().send(messageBody, (error, body) => {
-    console.log('Maybe???', body);
-    console.log('REQUEST BASE URL??', req.headers.host);
-    res.status(203).json({});
-  });       
-  
 });
 
 router.get('/register', function(req, res) {
@@ -78,7 +64,7 @@ router.post('/register', function(req, res) {
                 });
             }
 
-            actUrl = config.actUrl+actCode;
+            actUrl = `http://${req.headers.host}/activate/${actCode}`;
 
             const messageBody = {
               from: 'Team <no-reply@myserver.com>',
@@ -87,25 +73,45 @@ router.post('/register', function(req, res) {
               text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
             }
 
-            mailgun.messages().send(messageBody, (error, body) => {
-              console.log('Maybe???', body);
-            });   
-
-            // transporter.sendMail({
-            //     ...messageBody
-            // },function(err,info){
-            //   if (err){
-            //     log.error(err);
-            //   }else{
-            //     log.info(info);
-            //   }
-            // });
-
-            return res.status(200).json({
-                pageData: {
-                    msg : 'An activation link has been send to your email address.'
+            if (mailgun){
+              mailgun.messages().send(messageBody, (err, body) => {
+                if (err) {
+                  log.error(err);
+                  return res.status(203).json({
+                    pageData: {
+                        err : 'Error sending email'
+                    }
+                  });
                 }
-            });
+                log.info(body);
+                return res.status(200).json({
+                  pageData: {
+                      msg : 'An activation link has been send to your email address.'
+                  }
+              });
+              });     
+            }
+            else{
+              transporter.sendMail({
+                  ...messageBody
+              },function(err,info){
+                if (err){
+                  log.error(err);
+                  return res.status(203).json({
+                    pageData: {
+                        err : 'Error sending email'
+                    }
+                  });
+                }else{
+                  log.info(info);
+                  return res.status(200).json({
+                    pageData: {
+                        msg : 'An activation link has been send to your email address.'
+                    }
+                });
+                }
+              });
+            }
         });
     });
 });
