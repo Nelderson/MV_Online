@@ -4,6 +4,20 @@
   "repository": "https://github.com/Nelderson/MV_Online",
   "logo": "https://i.imgur.com/I0fAzpx.png",
   "keywords": ["node", "express", "static"],
+  "env": {
+    "MV_JWT_SECRET": {
+      "description": "A secret key for verifying the integrity of signed JSON Web Tokens.",
+      "generator": "secret"
+    },
+    "MV_FIRST_HASH": {
+      "description": "The first hash to pass all passwords through",
+      "generator": "secret"
+    },
+    "MV_TOKEN_EXPIRES_MIN": {
+      "description": "The amount of minutes before token expires",
+      "value": "20160"
+    }
+  },
   "addons": [
     {
       "plan": "mongolab:sandbox",

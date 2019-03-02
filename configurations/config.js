@@ -35,7 +35,7 @@ var Config = module.exports = {
   mailFrom: process.env.MV_MAILFROM || 'smtps://username@gmail.com:password@smtp.gmail.com',
 
   //Time until token expires (in minutes)
-  tokenExpiresIn: 60 * 24 * 14,
+  tokenExpiresIn: process.env.MV_TOKEN_EXPIRES_MIN || 60 * 24 * 14,
 
   //Allows only one logged in user at a time.
   enforceOneUser: false,
