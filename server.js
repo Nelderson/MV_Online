@@ -32,10 +32,10 @@ app.use(function(req,res,next){
 });
 
 
-if (!sticky.listen(server, process.env.PORT || config.port)) {
+if (!sticky.listen(server, config.port, {workers: 3})) {
   // Master code
   server.once('listening', function() {
-    log.info('Master Server started on 8000 port');
+    log.info('Master Server started on port: '+ config.port);
   });
 } 
 else {

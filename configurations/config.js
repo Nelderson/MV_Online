@@ -2,7 +2,7 @@ var Config = module.exports = {
   //---------------------
   //Main Configurations
   //---------------------
-  port: 8000,
+  port:  process.env.PORT || 8000,
 
   jwtSecret: process.env.MV_JWT_SECRET || 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
 
