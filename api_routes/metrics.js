@@ -8,7 +8,7 @@ var log = require('tracer').colorConsole(config.loggingConfig);
 
 //============Config Section=============//
 //Set this the same as client anonymous flag
-var anonymous = false;
+var anonymous = process.env.MV_METRICS_ANONYMOUS || false;
 //======================================//
 
  if (!anonymous){
