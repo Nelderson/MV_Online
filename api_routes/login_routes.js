@@ -8,11 +8,9 @@ var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
-var mailgunAPIKey = process.env.MAILGUN_API_KEY;
-var mailgunDomain = process.env.MAILGUN_DOMAIN;
-
-if (mailgunAPIKey && mailgunDomain){
-  var mailgun = require('mailgun-js')({apiKey: mailgunAPIKey, domain: mailgunDomain});
+if (process.env.SENDGRID_API_KEY){
+  const sgMail = require('@sendgrid/mail');
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
 
 router.get('/', function (req, res) {
@@ -73,23 +71,24 @@ router.post('/register', function(req, res) {
               text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
             }
 
-            if (mailgun){
-              mailgun.messages().send(messageBody, (err, body) => {
-                if (err) {
-                  log.error(err);
+            if (sgMail){
+              sgMail.send(msg)
+              .then(()=>{
+                log.info('Yes?');
+                return res.status(200).json({
+                  pageData: {
+                      msg : 'An activation link has been send to your email address.'
+                  }
+                });
+              })
+              .catch(error => {
+                log.error(err);
                   return res.status(203).json({
                     pageData: {
                         err : 'Error sending email'
                     }
                   });
-                }
-                log.info(body);
-                return res.status(200).json({
-                  pageData: {
-                      msg : 'An activation link has been send to your email address.'
-                  }
-              });
-              });     
+              })  
             }
             else{
               transporter.sendMail({

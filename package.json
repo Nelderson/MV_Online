@@ -10,6 +10,7 @@
     "node": "11.x"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
     "body-parser": "^1.18.3",
     "connect-redis": "^3.4.0",
     "express": "^4.16.4",
