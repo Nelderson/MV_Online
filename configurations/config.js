@@ -34,9 +34,6 @@ var Config = module.exports = {
   //Mail to send activation codes from
   mailFrom: process.env.MV_MAILFROM || 'smtps://username@gmail.com:password@smtp.gmail.com',
 
-  //Activation API Location
-  actUrl: 'http://localhost:8000/activate/',
-
   //Time until token expires (in minutes)
   tokenExpiresIn: process.env.MV_TOKEN_EXPIRES_MIN || 60 * 24 * 14,
 

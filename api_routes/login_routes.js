@@ -7,6 +7,12 @@ var transporter = nodemailer.createTransport(config.mailFrom);
 var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
+var sgMail = null;
+
+if (process.env.SENDGRID_API_KEY){
+  sgMail = require('@sendgrid/mail');
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 router.get('/', function (req, res) {
   res.status(203).json({});
@@ -57,7 +63,7 @@ router.post('/register', function(req, res) {
                 });
             }
 
-            actUrl = config.actUrl+actCode;
+            actUrl = `http://${req.headers.host}/activate/${actCode}`;
 
             const messageBody = {
               from: 'Team <no-reply@myserver.com>',
@@ -66,21 +72,46 @@ router.post('/register', function(req, res) {
               text: "Hello "+req.body.username+' and welcome to RPGMaker MV MMO!\nYour account has been registrated, but you need to activate it by following this link :\n'+actUrl+'\n\nEnjoy!\n\t-- Nelderson'
             }
 
-            transporter.sendMail({
-                ...messageBody
-            },function(err,info){
-              if (err){
+            if (sgMail){
+              sgMail.send(messageBody)
+              .then(()=>{
+                log.info('Yes?');
+                return res.status(200).json({
+                  pageData: {
+                      msg : 'An activation link has been send to your email address.'
+                  }
+                });
+              })
+              .catch(error => {
                 log.error(err);
-              }else{
-                log.info(info);
-              }
-            });
-
-            return res.status(200).json({
-                pageData: {
-                    msg : 'An activation link has been send to your email address.'
+                  return res.status(203).json({
+                    pageData: {
+                        err : 'Error sending email'
+                    }
+                  });
+              })  
+            }
+            else{
+              transporter.sendMail({
+                  ...messageBody
+              },function(err,info){
+                if (err){
+                  log.error(err);
+                  return res.status(203).json({
+                    pageData: {
+                        err : 'Error sending email'
+                    }
+                  });
+                }else{
+                  log.info(info);
+                  return res.status(200).json({
+                    pageData: {
+                        msg : 'An activation link has been send to your email address.'
+                    }
+                });
                 }
-            });
+              });
+            }
         });
     });
 });
