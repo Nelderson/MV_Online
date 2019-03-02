@@ -32,7 +32,7 @@ app.use(function(req,res,next){
 });
 
 
-if (!sticky.listen(server, config.port, {workers: 3})) {
+if (!sticky.listen(server, config.port, {workers: process.env.MV_WORKER_COUNT || null})) {
   // Master code
   server.once('listening', function() {
     log.info('Master Server started on port: '+ config.port);
