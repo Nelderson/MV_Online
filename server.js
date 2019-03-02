@@ -20,7 +20,7 @@ require('./api_routes/loginDBConnection')();
 var auth = require('./auth.js');
 
 const redisAdapter = require('socket.io-redis');
-io.adapter(redisAdapter(process.env.MV_REDIS_HOST_URL || {...config.redisConnection}));
+io.adapter(redisAdapter(config.redisConnection));
 
 app.use(logger('dev'));//For development
 app.use(bodyParser.json());
@@ -32,10 +32,10 @@ app.use(function(req,res,next){
 });
 
 
-if (!sticky.listen(server, process.env.PORT || config.port)) {
+if (!sticky.listen(server, config.port, {workers: process.env.MV_WORKER_COUNT || null})) {
   // Master code
   server.once('listening', function() {
-    log.info('Master Server started on 8000 port');
+    log.info('Master Server started on port: '+ config.port);
   });
 } 
 else {

@@ -14,8 +14,36 @@
       "generator": "secret"
     },
     "MV_TOKEN_EXPIRES_MIN": {
-      "description": "The amount of minutes before token expires",
+      "description": "The amount of minutes before token expires (20160 = 14 Days)",
       "value": "20160"
+    },
+    "MV_WORKER_COUNT" :{
+      "description": "The amount of workers the cluster will use",
+      "value": "4"
+    },
+    "MV_ENFORCE_ONE_USER" :{
+      "description": "Allow only one login per user",
+      "value": "false"
+    },
+    "MV_LOST_PASSWORD_COMPLEXITY" :{
+      "description": "Complexity of lost password (Default 2)",
+      "value": "2"
+    },
+    "MV_LOST_PASSWORD_EXPIRES" :{
+      "description": "Temporary Password Expiration in Milliseconds (3600000 = 1hr)",
+      "value": "3600000"
+    },
+    "MV_CHAT_ENABLE_LOGGING" :{
+      "description": "Enable logging on all chat windows",
+      "value": "false"
+    },
+    "MV_CHAT_PROFANITY_FILTER" :{
+      "description": "Enable profanity filter on all chat windows",
+      "value": "false"
+    },
+    "MV_METRICS_ANONYMOUS" :{
+      "description": "Make metrics anonymous",
+      "value": "false"
     }
   },
   "addons": [

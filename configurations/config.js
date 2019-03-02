@@ -2,7 +2,7 @@ var Config = module.exports = {
   //---------------------
   //Main Configurations
   //---------------------
-  port: 8000,
+  port:  process.env.PORT || 8000,
 
   jwtSecret: process.env.MV_JWT_SECRET || 'aeha8j4h20adn92k10nkav0sjf90sleicazvyi54j39jfqasfjk9',
 
@@ -20,9 +20,7 @@ var Config = module.exports = {
     level: 'debug'
   },
 
-  redisConnection: {
-    host: 'localhost', 
-  },
+  redisConnection: process.env.MV_REDIS_HOST_URL || 'redis://localhost',
 
   //---------------------
   //Login Configurations
@@ -38,13 +36,13 @@ var Config = module.exports = {
   tokenExpiresIn: process.env.MV_TOKEN_EXPIRES_MIN || 60 * 24 * 14,
 
   //Allows only one logged in user at a time.
-  enforceOneUser: false,
+  enforceOneUser: process.env.MV_ENFORCE_ONE_USER || false,
 
   //Temporary Password Complexity for lost Passwords
-  lostPasswordComplexity: 2,
+  lostPasswordComplexity: process.env.MV_LOST_PASSWORD_COMPLEXITY || 2,
 
   //Temporary Password Expiration in Milliseconds
-  tempPasswordExpires: 3600000, //1 hour
+  tempPasswordExpires: process.env.MV_LOST_PASSWORD_EXPIRES || 3600000, //1 hour
 
   //------------------------
   //Database Configurations
