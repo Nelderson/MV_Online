@@ -14,7 +14,7 @@
       "generator": "secret"
     },
     "MV_TOKEN_EXPIRES_MIN": {
-      "description": "The first hash to pass all passwords through",
+      "description": "The amount of minutes before token expires",
       "value": "20160"
     }
   },
