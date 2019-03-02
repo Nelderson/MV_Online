@@ -7,9 +7,10 @@ var transporter = nodemailer.createTransport(config.mailFrom);
 var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
+var sgMail = null;
 
 if (process.env.SENDGRID_API_KEY){
-  const sgMail = require('@sendgrid/mail');
+  sgMail = require('@sendgrid/mail');
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
 
