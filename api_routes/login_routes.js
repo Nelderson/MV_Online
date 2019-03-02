@@ -73,7 +73,7 @@ router.post('/register', function(req, res) {
             }
 
             if (sgMail){
-              sgMail.send(msg)
+              sgMail.send(messageBody)
               .then(()=>{
                 log.info('Yes?');
                 return res.status(200).json({
