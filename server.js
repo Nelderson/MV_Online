@@ -41,7 +41,6 @@ if (!sticky.listen(server, config.port, {workers: process.env.MV_WORKER_COUNT ||
 else {
   // Worker code
   
-
   log.info('Worker is on bruh and running on port: '+ config.port);
 
   //----------------------------------

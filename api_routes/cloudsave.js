@@ -7,7 +7,8 @@ var log = require('tracer').colorConsole(config.loggingConfig);
 
 var SaveData = new mongoose.Schema({
   savefileId: {type: Number, required: true},
-  savedata: {type: String, required: true}
+  savedata: {type: String, required: true},
+  timestamp: {type: Date, required: true}
 },{ _id: false });
 
 var Save = new mongoose.Schema({
@@ -49,7 +50,7 @@ router.post('/savetocloud', function(req, res){
     }
     if (account){
       //Update save data to database
-      account.savedata.push({ savefileId, savedata });
+      account.savedata.push({ savefileId, savedata, timestamp: new Date() });
 
       account.save(function(err){
         if (err){
@@ -64,7 +65,7 @@ router.post('/savetocloud', function(req, res){
       var newUser = new Saves({
         username: name,
         email: email,
-        savedata: { savefileId, savedata },
+        savedata: { savefileId, savedata, timestamp: new Date() },
       });
       newUser.save(function(err, data){
         if (err) log.error(err);
