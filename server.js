@@ -53,7 +53,7 @@ else {
   app.use('/metrics',require('./api_routes/metrics'));
 
   // Authentication required:
-  app.use('/example',require('./api_routes/example.js'));
+  app.use('/cloudsave',require('./api_routes/cloudsave.js'));
 
   //Static Server - Used to serve static files (HTNL,PNG,etc.)
   app.use('/static', express.static('public'));
