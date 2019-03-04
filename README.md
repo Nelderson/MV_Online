@@ -7,10 +7,13 @@ Node.js and RPGMaker MV
 
 Installation
 -------------
+There are two different deploy methods for the server: `Heroku` and `Manual Deploy`.
 
-Deploy to Heroku here:
+#### Deploy to Heroku here: ####
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/Nelderson/MV_Online/tree/master)
+
+#### Manual Deploy ####
 
 Use `git clone` or download and unzip to the directory of your choice.
 
@@ -22,19 +25,19 @@ After configuring the server run `npm start` to start the server
 Server Configuration
 -------------
 
-Inside the  `server/configurations/config.js` file, there are several things to configure:
+Inside the  `server/configurations/config.js` file, there are several things to configure.  You may also use environment variables through nodejs dependant on your Operating System or through the use of Heroku's environment config variables.
 
-`port` defines which port the server will run on (Default `8000`)
+`port || process.env.PORT` defines which port the server will run on (Default `8000`)
 
-`jwtSecret` defines the secret the JWT is signed.  Please change this for security reasons in a production environment
+`jwtSecret || process.env.MV_JWT_SECRET` defines the secret the JWT is signed.  Please change this for security reasons in a production environment.  Heroku randomly generates this variable.
 
-`firstHash` is the initial hashing secret for login system.  This is the same as the client plugin first hash.  Recommended that this be changed before putting in a production environment
+`firstHash || process.env.MV_FIRST_HASH` is the initial hashing secret for login system.  This is the same as the client plugin first hash.  Recommended that this be changed before putting in a production environment. Heroku randomly generates this variable.
 
 
-`mailFrom` when a user registers they recieve an email from this address.
+`mailFrom || process.env.MV_MAILFROM` when a user registers they recieve an email from this address.
 `smtps://username@gmail.com:password@smtp.gmail.com`  (Additional steps are required if you want to use gmail.)
 
-`mongoDBconnect` Link and credentials to MongoDB Database. `mongodb://username:password@linktomongodb.com:39504/collection`
+`mongoDBconnect || process.env.MV_MONGO_URI` Link and credentials to MongoDB Database. `mongodb://username:password@linktomongodb.com:39504/collection`
 
 
 Client Configuration (RPGMaker MV)
