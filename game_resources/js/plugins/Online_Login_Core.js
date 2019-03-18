@@ -2,9 +2,10 @@ var Imported = Imported || {};
 Imported.Online_Login_Core = true;
 
 (function () {
-var Nasty = Nasty || {};
+	var Nasty = Nasty || {};
 //=============================================================================
 // Online Login Core
+// Version: 1.1.6 - Added logic to use localstorage to auto login
 // Version: 1.1.5 - Added Password Reset Logic
 // Version: 1.1.4 - Added event switches for when users login multiple times
 // Version: 1.1.3
@@ -64,8 +65,8 @@ var Nasty = Nasty || {};
 						SceneManager.goto(MMO_Scene_Title);
 					}
         }
-      };
-
+			};
+			
 	//----------------------------------------------------------------------------
 	// MMO_Scene_Title
 	//
@@ -80,7 +81,7 @@ var Nasty = Nasty || {};
 	MMO_Scene_Title.prototype.constructor = MMO_Scene_Title;
 
 	MMO_Scene_Title.prototype.initialize = function() {
-	    Scene_Base.prototype.initialize.call(this);
+			Scene_Base.prototype.initialize.call(this);
 	};
 
 	MMO_Scene_Title.prototype.reBindInput = function() {
@@ -93,11 +94,27 @@ var Nasty = Nasty || {};
 	};
 
 	MMO_Scene_Title.prototype.start = function() {
-	    Scene_Base.prototype.start.call(this);
-	    SceneManager.clearStack();
-	    this.playTitleMusic();
-	    this.startFadeIn(this.fadeSpeed(), false);
-	    this.createLoginForm();
+		Scene_Base.prototype.start.call(this);
+		var token = localStorage.getItem('token');
+		var that = this
+
+		SceneManager.clearStack();
+		this.playTitleMusic();
+		this.startFadeIn(this.fadeSpeed(), false);
+
+		if (token) {
+			//Need to veriy token
+			$.get($gameNetwork._serverURL+'/verify-token', {token: token},
+			function(data){
+				that.createLogoutContinueForm(data.token.name, token);
+			})
+			.fail(function(){
+				that.createLoginForm();
+			});
+		}
+		else{
+			this.createLoginForm();
+		}
 	};
 
 	MMO_Scene_Title.prototype.update = function() {
@@ -182,7 +199,7 @@ var Nasty = Nasty || {};
     $("#inputPassword").tap(function(){$("#inputPassword").focus();});
 		$("#btnConnect").bind("click touchstart",function(){that.connectAttempt();});
 		$("#btnRegister").bind("click touchstart",function(){that.createRegistrationForm();});
-    $("#btnForgotPassword").bind("click touchstart",function(){that.createLostPasswordForm();});
+		$("#btnForgotPassword").bind("click touchstart",function(){that.createLostPasswordForm();});
     $("#inputUsername").focus();
 	};
 
@@ -206,6 +223,47 @@ var Nasty = Nasty || {};
 			}
 		});
     $("#btnActLogin").bind("click touchstart",function(){that.createLoginForm();});
+	};
+
+	MMO_Scene_Title.prototype.createLogoutContinueForm = function(name, token) {
+		$("#ErrorPrinter").html(
+			`<div id="ActivationForm" class="panel panel-primary" style="width: ${(Graphics.boxWidth - (Graphics.boxWidth / 3))}px">
+				<div class="panel-heading">Welcome ${name}</div>
+				<div class="panel-body">
+					<div id="loginErrBox"></div>
+					<div class="input-group">
+					</div><br>
+					<button id="btnContinue" class="btn btn-primary">Continue</button>
+					<button id="btnLogout" class="btn btn-default">Log Out</button>
+				</div>
+			</div>`);
+
+		//Bind commands
+		var that = this;
+
+    $("#btnLogout").bind("click touchstart",function(){
+			localStorage.removeItem('token');
+			that.createLoginForm();
+		});
+
+    $("#btnContinue").bind("click touchstart",function(){
+			$gameNetwork._token = token;
+			var ioFlag = String(Nasty.Parameters['socket.io connection']);
+			$("#ErrorPrinter").fadeOut({duration: 1000}).html("");
+			if (ioFlag==='true'){
+				$gameNetwork.connectSocket('main','/');
+				$gameNetwork._socket.main.on('firstShutDown',function(data){
+					$gameSwitches.setValue(Number(Nasty.Parameters['Switch on First Shutdown']),true);
+				});
+				$gameNetwork._socket.main.on('secondShutDown',function(data){
+					$gameSwitches.setValue(Number(Nasty.Parameters['Switch on Second Shutdown']),true);
+				});
+			}
+			$gameNetwork.connectSocketsAfterLogin();
+			that.fadeOutAll();
+			SceneManager.goto(Scene_Map);
+			return that.displayInfo("Ok : ");
+		});
 	};
 
 	MMO_Scene_Title.prototype.displayError = function(msg) {
@@ -315,8 +373,8 @@ var Nasty = Nasty || {};
         that.createLoginForm();
         that.displayInfo("Check email for temporary password");
       });
-    };
-
+		};
+		
 	MMO_Scene_Title.prototype.connectAttempt = function(){
 		var that = this;
 		var username = $("#inputUsername").val();
@@ -343,6 +401,7 @@ var Nasty = Nasty || {};
         }
 					if (data.token) {
 						$gameNetwork._token = data.token;
+						localStorage.setItem('token', data.token);
 						var ioFlag = String(Nasty.Parameters['socket.io connection']);
 						$("#ErrorPrinter").fadeOut({duration: 1000}).html("");
             if (ioFlag==='true'){
