@@ -7,6 +7,7 @@ var transporter = nodemailer.createTransport(config.mailFrom);
 var Account = require('./LoginSchema/Account');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
+var authAPI = require('../auth.js').authAPI;
 var sgMail = null;
 
 if (process.env.SENDGRID_API_KEY){
@@ -16,6 +17,13 @@ if (process.env.SENDGRID_API_KEY){
 
 router.get('/', function (req, res) {
   res.status(203).json({});
+});
+
+
+router.get('/verify-token', function (req, res, next) {
+  authAPI(req,res,next)
+}, function (req, res, next) {
+  res.status(203).json({token: req.decoded});
 });
 
 router.get('/register', function(req, res) {
