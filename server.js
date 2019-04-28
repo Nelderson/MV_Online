@@ -54,6 +54,7 @@ else {
 
   // Authentication required:
   app.use('/cloudsave',require('./api_routes/cloudsave.js'));
+  app.use('/character-creator',require('./api_routes/characterCreator.js'));
 
   //Static Server - Used to serve static files (HTNL,PNG,etc.)
   app.use('/static', express.static('public'));
