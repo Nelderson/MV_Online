@@ -72,7 +72,11 @@ router.post('/register', function(req, res) {
             }
 
             if (config.autoActivateAccount) {
-              return res.status(200).json({});
+              return res.status(200).json({
+                pageData: {
+                    msg : 'Please login with your new credentials'
+                }
+            });
             }
 
             actUrl = `http://${req.headers.host}/activate/${actCode}`;
