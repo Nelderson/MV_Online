@@ -27,7 +27,7 @@ var Config = module.exports = {
   //Login Configurations
   //---------------------
 
-  autoActivateAccount: process.env.MV_AUTO_ACTIVATE || false,
+  autoActivateAccount: process.env.MV_AUTO_ACTIVATE || true,
 
   //Needs to be the same as Client firstHash
   firstHash: process.env.MV_FIRST_HASH ||'d28cb767c4272d8ab91000283c67747cb2ef7cd1',
