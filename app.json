@@ -44,6 +44,10 @@
     "MV_METRICS_ANONYMOUS" :{
       "description": "Make metrics anonymous",
       "value": "false"
+    },
+    "MV_AUTO_ACTIVATE" :{
+      "description": "Auto activates accounts and doesn't send an activation email",
+      "value": "true"
     }
   },
   "addons": [
