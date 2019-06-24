@@ -19,8 +19,9 @@ var Config = module.exports = {
     },
     level: 'debug'
   },
-
-  redisConnection: process.env.MV_REDIS_HOST_URL || 'redis://localhost',
+  
+  // Change null to the 'url' of your redis server: ex: 'redis://localhost'
+  redisConnection: process.env.MV_REDIS_HOST_URL || null,
 
   //---------------------
   //Login Configurations
