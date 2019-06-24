@@ -71,6 +71,10 @@ router.post('/register', function(req, res) {
                 });
             }
 
+            if (config.autoActivateAccount) {
+              return res.status(200).json({});
+            }
+
             actUrl = `http://${req.headers.host}/activate/${actCode}`;
 
             const messageBody = {
