@@ -1,0 +1,19 @@
+version: '3'
+services:
+  mv-online:
+    container_name: mv-online
+    restart: always
+    build: .
+    ports:
+      - '8000:8000'
+    links:
+      - redis
+      - mongo
+  mongo:
+    container_name: mv-online-mongo
+    image: 'mongo:4'
+    ports:
+      - '27018:27017'
+  redis:
+    container_name: mv-online-redis
+    image: 'redis:4.0.11'

@@ -20,7 +20,7 @@ var Config = module.exports = {
     level: 'debug'
   },
 
-  redisConnection: process.env.MV_REDIS_HOST_URL || 'redis://localhost',
+  redisConnection: process.env.MV_REDIS_HOST_URL || 'redis://mv-online-redis:6379',
 
   //---------------------
   //Login Configurations
@@ -48,5 +48,5 @@ var Config = module.exports = {
   //Database Configurations
   //------------------------
 
-  mongoDBconnect: process.env.MV_MONGO_URI || 'mongodb://username:password@linktomongodb.com:39504/collection'
+  mongoDBconnect: process.env.MV_MONGO_URI || 'mongodb://mv-online-mongo:27017/mvonline'
 };
