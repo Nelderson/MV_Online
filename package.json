@@ -25,7 +25,7 @@
     "passport-local-mongoose": "^5.0.1",
     "redis": "^2.8.0",
     "sendgrid": "^5.2.3",
-    "socket.io": "2.2.0",
+    "socket.io": "2.5.0",
     "socket.io-redis": "5.2.0",
     "sticky-session": "1.1.2",
     "swearjar": "^0.2.0",
